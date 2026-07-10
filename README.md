@@ -10,7 +10,7 @@ Follow these steps to set up the project on your machine:
 Ensure you have the following installed:
 * [Node.js](https://nodejs.org/) (v16+)
 * [Git](https://git-scm.com/)
-* [MongoDB](https://www.mongodb.com/) (Local or Atlas)
+* [PostgreesSQL](https://www.mongodb.com/) (Local or Atlas)
 
 ### 2. Clone the Repository
 ```bash
