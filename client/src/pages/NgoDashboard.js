@@ -26,23 +26,38 @@ const NgoDashboard = () => {
     }, []);
 
     const handleClaim = async (id) => {
-        // अगर कोई डोनर कंसोल से रिक्वेस्ट भेजे, तो उसे यहाँ रोक दें
-        if (localStorage.getItem('role') !== 'ngo') {
-            alert("Access Denied! Only NGOs can claim food.");
+        console.log("Claim button clicked");
+        console.log("Donation ID:", id);
+
+        if (!id) {
+            alert("Invalid Donation ID");
             return;
         }
 
         try {
-            await axios.patch(`http://localhost:5000/donations/claim/${id}`);
-            alert("🎉 Claimed successfully!");
-            fetchDonations();
-            console.log('[NGO_DASHBOARD] ✅ Food claimed:', id);
-        } catch (err) {
-            console.error('[NGO_DASHBOARD] ❌ Error claiming food:', err);
-            alert("Error claiming food");
+            const response = await axios.patch(
+                `http://localhost:5000/donations/claim/${id}`
+            );
+
+            console.log("Server Response:", response.data);
+
+            alert("🎉 Food Claimed Successfully!");
+
+            // Refresh available donations
+            await fetchDonations();
+
+        } catch (error) {
+            console.error("Claim Error:", error);
+
+            if (error.response) {
+                console.log("Status:", error.response.status);
+                console.log("Data:", error.response.data);
+                alert(error.response.data.error || "Failed to claim food.");
+            } else {
+                alert("Server not responding.");
+            }
         }
     };
-
     const getTimeRemaining = (expiryTime) => {
         const now = new Date();
         const expiry = new Date(expiryTime);
@@ -400,8 +415,8 @@ SEARCH & FILTER
 
 
             {/* ===========================
-DONATION GRID START
-============================ */}
+        DONATION GRID START
+=========================== */}
 
             <section className="food-grid">
 
@@ -415,7 +430,6 @@ DONATION GRID START
                 ) : foodList.length === 0 ? (
 
                     <div className="empty-state">
-
                         <img
                             src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png"
                             alt="No Food"
@@ -427,69 +441,83 @@ DONATION GRID START
                             There are currently no available donations.
                             Please check again later.
                         </p>
-
                     </div>
 
                 ) : (
 
-                    foodList.map((item) => (
+                    foodList.map((item) => {
 
-                        <div className="food-card" key={item._id}>
+                        console.log("Donation Item =>", item);
 
-                            <div className="food-image">
+                        return (
 
-                                <img
-                                    src={
-                                        item.foodImage
-                                            ? `http://localhost:5000/uploads/${item.foodImage}`
-                                            : "https://images.unsplash.com/photo-1547592180-85f173990554?w=800"
-                                    }
-                                    alt={item.foodName}
-                                />
+                            <div
+                                className="food-card"
+                                key={item.id}
+                            >
 
-                                <span className="food-status">
-                                    🟢 Available
-                                </span>
+                                {/* Food Image */}
+                                <div className="food-image">
 
-                            </div>
+                                    <img
+                                        src={
+                                            item.image_url
+                                                ? `http://localhost:5000${item.image_url}`
+                                                : "https://images.unsplash.com/photo-1547592180-85f173990554?w=800"
+                                        }
+                                        alt={item.food_name}
+                                    />
 
-                            <div className="food-content">
-
-                                <h2>{item.foodName}</h2>
-
-                                <p>🏪 {item.restaurantName}</p>
-
-                                <p>📦 {item.quantity} Servings</p>
-
-                                <p>📍 {item.location}</p>
-
-                                <p className="expiry">
-                                    {getTimeRemaining(item.expiry)}
-                                </p>
-                                <div className="pickup-time">
-
-                                    <span>
-                                        🚚 Pickup ETA
-                                    </span>
-
-                                    <span>
-                                        20-30 min
+                                    <span className="food-status">
+                                        🟢 Available
                                     </span>
 
                                 </div>
 
-                                <button
-                                    className="claim-btn"
-                                    onClick={() => handleClaim(item._id)}
-                                >
-                                    ❤️ Claim Food
-                                </button>
+                                {/* Food Content */}
+                                <div className="food-content">
+
+                                    <h2>{item.food_name}</h2>
+
+                                    <p>🏪 {item.restaurant_name}</p>
+
+                                    <p>📦 {item.quantity} Servings</p>
+
+                                    <p>📍 {item.location}</p>
+
+                                    <p className="expiry">
+                                        {getTimeRemaining(item.expiry_time)}
+                                    </p>
+
+                                    <div className="pickup-time">
+                                        <span>🚚 Pickup ETA</span>
+                                        <span>20-30 min</span>
+                                    </div>
+
+                                    <button
+                                        type="button"
+                                        className="claim-btn"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+
+                                            console.log("🔥 Claim Button Clicked");
+                                            console.log("Donation ID :", item.id);
+                                            console.log("Donation :", item);
+
+                                            handleClaim(item.id);
+                                        }}
+                                    >
+                                        ❤️ Claim Food
+                                    </button>
+
+                                </div>
 
                             </div>
 
-                        </div>
+                        );
 
-                    ))
+                    })
 
                 )}
 
