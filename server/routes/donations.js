@@ -37,15 +37,47 @@ router.get('/', async (req, res) => {
     }
 });
 
-// PATCH: क्लेम करने के लिए
-router.patch('/claim/:id', async (req, res) => {
+// PATCH: NGO Claim Food
+router.patch("/claim/:id", async (req, res) => {
+
     const { id } = req.params;
+    const { ngo_id } = req.body;
+
     try {
-        await pool.query("UPDATE donations SET status = 'claimed' WHERE id = $1", [id]);
-        res.json({ message: "Claimed successfully!" });
+
+        const result = await pool.query(
+            `UPDATE donations
+             SET status = 'claimed',
+                 ngo_id = $1,
+                 claimed_at = NOW()
+             WHERE id = $2
+             RETURNING *`,
+            [ngo_id, id]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                error: "Donation not found"
+            });
+        }
+
+        res.json({
+            success: true,
+            message: "Claimed Successfully",
+            donation: result.rows[0]
+        });
+
     } catch (err) {
-        res.status(500).json({ error: err.message });
+
+        console.error(err);
+
+        res.status(500).json({
+            error: err.message
+        });
+
     }
+
 });
+
 
 module.exports = router;

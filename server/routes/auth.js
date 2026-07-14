@@ -1,55 +1,142 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const pool = require('../db');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const pool = require("../db");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
-// Register Route
-// routes/auth.js में लॉगिन रूट
-router.post('/login', async (req, res) => {
-    const { email, password, role } = req.body; // 'role' यहाँ से लें
+// =====================================
+// REGISTER
+// =====================================
+
+router.post("/register", async (req, res) => {
+
+    const { name, email, password, role } = req.body;
+
     try {
-        const user = await pool.query("SELECT * FROM users WHERE email = $1 AND role = $2", [email, role]);
-        
-        if (user.rows.length === 0) {
-            return res.status(401).json({ message: "Invalid credentials or role" });
-        }
-        
-        // ... बाकी का पासवर्ड चेक करने वाला कोड वही रहेगा
-        const validPassword = await bcrypt.compare(password, user.rows[0].password);
-        if (!validPassword) return res.status(401).json({ message: "Invalid password" });
 
-        const token = jwt.sign({ user_id: user.rows[0].id }, 'mysecretkey', { expiresIn: '1h' });
-        res.json({ token, role: user.rows[0].role, user_id: user.rows[0].id });
+        const checkUser = await pool.query(
+            "SELECT * FROM users WHERE email = $1",
+            [email]
+        );
+
+        if (checkUser.rows.length > 0) {
+            return res.status(400).json({
+                success: false,
+                message: "User already exists"
+            });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const result = await pool.query(
+            `INSERT INTO users (name, email, password, role)
+             VALUES ($1, $2, $3, $4)
+             RETURNING user_id, name, email, role`,
+            [name, email, hashedPassword, role]
+        );
+
+        res.status(201).json({
+            success: true,
+            message: "Registration Successful",
+            user: result.rows[0]
+        });
+
     } catch (err) {
-        res.status(500).json({ error: "Server error" });
+
+        console.error(err);
+
+        res.status(500).json({
+            success: false,
+            error: err.message
+        });
+
     }
+
 });
 
-// Login Route
-router.post('/login', async (req, res) => {
-    const { email, password } = req.body;
+
+// =====================================
+// LOGIN
+// =====================================
+
+router.post("/login", async (req, res) => {
+
+    const { email, password, role } = req.body;
+
     try {
-        const user = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
-        if (user.rows.length === 0) return res.status(401).json({ message: "Invalid credentials" });
 
-        const validPassword = await bcrypt.compare(password, user.rows[0].password);
-        if (!validPassword) return res.status(401).json({ message: "Invalid credentials" });
+        const result = await pool.query(
+            "SELECT * FROM users WHERE email = $1 AND role = $2",
+            [email, role]
+        );
 
-        // JWT टोकन बनाना
-        const token = jwt.sign({ user_id: user.rows[0].id }, 'mysecretkey', { expiresIn: '1h' });
+        if (result.rows.length === 0) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid Email or Role"
+            });
+        }
 
-        // यहाँ से 'role' भी भेज रहे हैं ताकि फ्रंटएंड फैसला कर सके
-        res.json({ 
-            message: "Login successful!", 
-            token, 
-            user_id: user.rows[0].id, 
-            role: user.rows[0].role 
+        const user = result.rows[0];
+
+        const validPassword = await bcrypt.compare(
+            password,
+            user.password
+        );
+
+        if (!validPassword) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid Password"
+            });
+        }
+
+        const token = jwt.sign(
+            {
+                user_id: user.user_id
+            },
+            "mysecretkey",
+            {
+                expiresIn: "1h"
+            }
+        );
+
+        res.json({
+
+            success: true,
+
+            message: "Login Successful",
+
+            token,
+
+            user: {
+
+                id: user.user_id,
+
+                name: user.name,
+
+                email: user.email,
+
+                role: user.role
+
+            }
+
         });
+
     } catch (err) {
-        console.error(err.message);
-        res.status(500).json({ error: "Server error" });
+
+        console.error(err);
+
+        res.status(500).json({
+
+            success: false,
+
+            error: err.message
+
+        });
+
     }
+
 });
 
 module.exports = router;

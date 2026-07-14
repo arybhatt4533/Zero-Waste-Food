@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './NgoDashboard.css';
+import { useNavigate } from "react-router-dom";
 
 const NgoDashboard = () => {
     const [foodList, setFoodList] = useState([]);
     const [loading, setLoading] = useState(false);
+
+    const navigate = useNavigate();
+
+    const user = JSON.parse(localStorage.getItem("user"));
 
     const fetchDonations = async () => {
         setLoading(true);
@@ -26,37 +31,59 @@ const NgoDashboard = () => {
     }, []);
 
     const handleClaim = async (id) => {
+
         console.log("Claim button clicked");
         console.log("Donation ID:", id);
+
+        const ngo_id = localStorage.getItem("user_id");
 
         if (!id) {
             alert("Invalid Donation ID");
             return;
         }
 
+        if (!ngo_id) {
+            alert("NGO not logged in!");
+            return;
+        }
+
         try {
+
             const response = await axios.patch(
-                `http://localhost:5000/donations/claim/${id}`
+
+                `http://localhost:5000/donations/claim/${id}`,
+
+                {
+                    ngo_id
+                }
+
             );
 
             console.log("Server Response:", response.data);
 
             alert("🎉 Food Claimed Successfully!");
 
-            // Refresh available donations
             await fetchDonations();
 
         } catch (error) {
+
             console.error("Claim Error:", error);
 
             if (error.response) {
+
                 console.log("Status:", error.response.status);
                 console.log("Data:", error.response.data);
+
                 alert(error.response.data.error || "Failed to claim food.");
+
             } else {
+
                 alert("Server not responding.");
+
             }
+
         }
+
     };
     const getTimeRemaining = (expiryTime) => {
         const now = new Date();
@@ -141,20 +168,14 @@ const NgoDashboard = () => {
 
                     </button>
 
-                    <div className="ngo-profile">
+                    <div className="ngo-nav-right">
 
-                        <img
-                            src="https://i.pravatar.cc/150?img=12"
-                            alt="profile"
-                        />
-
-                        <div>
-
-                            <h4>Helping Hands NGO</h4>
-
-                            <span>Verified NGO</span>
-
-                        </div>
+                        <button
+                            className="profile-btn"
+                            onClick={() => navigate("/ngo-profile")}
+                        >
+                            👤 My Profile
+                        </button>
 
                     </div>
 

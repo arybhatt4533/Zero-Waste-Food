@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const pool = require('./db');
+const ngoRoutes = require("./routes/ngo");
 require('dotenv').config();
 
 const app = express();
@@ -10,6 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
+app.use("/ngo", ngoRoutes);
 
 // Routes
 const authRoutes = require('./routes/auth');

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
@@ -12,31 +13,59 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
+
     e.preventDefault();
 
     try {
 
-      const res = await axios.post(
-        "http://localhost:5000/auth/login",
-        {
-          email,
-          password,
-          role,
+        const res = await axios.post(
+            "http://localhost:5000/auth/login",
+            {
+                email,
+                password,
+                role
+            }
+        );
+        console.log(res.data); 
+
+        // Token Save
+        localStorage.setItem("token", res.data.token);
+
+        // User Save
+        localStorage.setItem(
+            "user",
+            JSON.stringify(res.data.user)
+        );
+
+        // Role Save
+        localStorage.setItem(
+            "role",
+            res.data.user.role
+        );
+
+        // User ID Save
+        localStorage.setItem(
+            "user_id",
+            res.data.user.id
+        );
+
+        alert("Login Successful ✅");
+
+        if (res.data.user.role === "ngo") {
+            navigate("/ngo-dashboard");
+        } else {
+            navigate("/donate");
         }
-      );
-
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("role", res.data.role);
-
-      role === "ngo"
-        ? navigate("/ngo-dashboard")
-        : navigate("/donate");
 
     } catch (err) {
-      alert("Invalid Credentials!");
-    }
-  };
 
+        console.log(err);
+
+        alert("Invalid Credentials!");
+
+    }
+
+};
   return (
 
     <div className="login-container">
