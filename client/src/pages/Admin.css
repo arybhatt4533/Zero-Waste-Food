@@ -1,0 +1,771 @@
+/*==========================================
+GOOGLE FONT
+==========================================*/
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Outfit',sans-serif;
+}
+
+body{
+    background:#111111;
+    overflow-x:hidden;
+}
+
+/*==========================================
+MAIN PAGE
+==========================================*/
+
+.admin-login-page{
+
+    min-height:100vh;
+
+    display:grid;
+
+    grid-template-columns:1.15fr .85fr;
+
+    overflow:hidden;
+
+    background:
+    radial-gradient(circle at top left,#ff5a5f25,transparent 35%),
+    radial-gradient(circle at bottom right,#ff7b5425,transparent 40%),
+    linear-gradient(
+        135deg,
+        #151515,
+        #101010,
+        #0a0a0a
+    );
+
+}
+
+/*==========================================
+LEFT PANEL
+==========================================*/
+
+.admin-left{
+
+    position:relative;
+
+    display:flex;
+
+    align-items:center;
+
+    padding:80px;
+
+    overflow:hidden;
+
+    color:#fff;
+
+    background:
+    linear-gradient(
+        135deg,
+        #181818,
+        #141414,
+        #101010
+    );
+
+}
+
+/* Animated Glow */
+
+.admin-left::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:700px;
+    height:700px;
+
+    border-radius:50%;
+
+    left:-180px;
+    top:-150px;
+
+    background:
+    radial-gradient(
+        circle,
+        rgba(226,55,68,.9),
+        rgba(255,90,95,.45),
+        transparent 70%
+    );
+
+    filter:blur(130px);
+
+    animation:rotateGlow 18s linear infinite;
+
+    opacity:.55;
+
+}
+
+.admin-left::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background-image:
+
+    linear-gradient(
+        rgba(255,255,255,.03) 1px,
+        transparent 1px
+    ),
+
+    linear-gradient(
+        90deg,
+        rgba(255,255,255,.03) 1px,
+        transparent 1px
+    );
+
+    background-size:45px 45px;
+
+    opacity:.18;
+
+}
+
+@keyframes rotateGlow{
+
+    from{
+
+        transform:rotate(0deg);
+
+    }
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+.overlay{
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+
+    linear-gradient(
+
+        to right,
+
+        rgba(10,10,10,.05),
+
+        rgba(10,10,10,.75)
+
+    );
+
+    z-index:1;
+
+}
+
+/*==========================================
+LEFT CONTENT
+==========================================*/
+
+.left-content{
+
+    position:relative;
+
+    z-index:5;
+
+    max-width:650px;
+
+}
+
+.badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    padding:12px 24px;
+
+    border-radius:50px;
+
+    background:
+
+    linear-gradient(
+
+        90deg,
+
+        #ff5a5f,
+
+        #e23744
+
+    );
+
+    color:#fff;
+
+    font-weight:700;
+
+    letter-spacing:1px;
+
+    margin-bottom:30px;
+
+    box-shadow:
+
+    0 0 30px rgba(226,55,68,.45);
+
+    animation:pulse 2s infinite;
+
+}
+
+@keyframes pulse{
+
+    50%{
+
+        transform:scale(1.05);
+
+    }
+
+}
+
+.left-content h1{
+
+    font-size:70px;
+
+    line-height:80px;
+
+    font-weight:900;
+
+    margin-bottom:30px;
+
+    text-transform:uppercase;
+
+    background:
+
+    linear-gradient(
+
+        90deg,
+
+        #ffffff,
+
+        #ffe0e0,
+
+        #ff8c8c,
+
+        #ff4d4d,
+
+        #ffffff
+
+    );
+
+    background-size:400%;
+
+    -webkit-background-clip:text;
+
+    -webkit-text-fill-color:transparent;
+
+    animation:shine 8s linear infinite;
+
+}
+
+.left-content h1 span{
+
+    display:block;
+
+    margin-top:8px;
+
+    font-size:78px;
+
+    background:
+
+    linear-gradient(
+
+        90deg,
+
+        #ffd700,
+
+        #ff9800,
+
+        #ff5a5f,
+
+        #ffffff
+
+    );
+
+    background-size:300%;
+
+    -webkit-background-clip:text;
+
+    -webkit-text-fill-color:transparent;
+
+    animation:shine 6s linear infinite;
+
+}
+
+@keyframes shine{
+
+    0%{
+
+        background-position:0%;
+
+    }
+
+    100%{
+
+        background-position:400%;
+
+    }
+
+}
+
+.left-content p{
+
+    font-size:20px;
+
+    line-height:35px;
+
+    color:#dddddd;
+
+    margin-bottom:45px;
+
+}
+
+/*==========================================
+FEATURES
+==========================================*/
+
+.feature-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+.feature{
+
+    padding:18px 24px;
+
+    border-radius:18px;
+
+    background:rgba(255,255,255,.06);
+
+    border-left:5px solid #e23744;
+
+    backdrop-filter:blur(15px);
+
+    color:#fff;
+
+    transition:.35s;
+
+    cursor:pointer;
+
+}
+
+.feature:hover{
+
+    transform:translateX(12px);
+
+    background:
+
+    linear-gradient(
+
+        90deg,
+
+        #e23744,
+
+        #ff5a5f
+
+    );
+
+    box-shadow:
+
+    0 15px 35px rgba(226,55,68,.35);
+
+}/*==========================================
+RIGHT PANEL
+==========================================*/
+
+.admin-right{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:50px;
+
+    background:
+    linear-gradient(
+        180deg,
+        #1c1c1c,
+        #111111
+    );
+
+}
+
+/*==========================================
+LOGIN BOX
+==========================================*/
+
+.admin-login-box{
+
+    width:100%;
+
+    max-width:460px;
+
+    background:rgba(25,25,25,.92);
+
+    backdrop-filter:blur(30px);
+
+    border-radius:35px;
+
+    padding:50px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+    0 25px 70px rgba(226,55,68,.25);
+
+}
+
+.login-logo{
+
+    width:95px;
+
+    height:95px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:42px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #e23744,
+        #ff5a5f
+    );
+
+    color:#fff;
+
+    margin-bottom:28px;
+
+    box-shadow:
+    0 20px 45px rgba(226,55,68,.45);
+
+    animation:heartbeat 2s infinite;
+
+}
+
+@keyframes heartbeat{
+
+    0%,100%{
+
+        transform:scale(1);
+
+    }
+
+    50%{
+
+        transform:scale(1.08);
+
+    }
+
+}
+
+.admin-login-box h2{
+
+    text-align:center;
+
+    font-size:36px;
+
+    color:#fff;
+
+    margin-bottom:12px;
+
+}
+
+.admin-login-box p{
+
+    text-align:center;
+
+    color:#bbbbbb;
+
+    margin-bottom:35px;
+
+    line-height:28px;
+
+}
+
+/*==========================================
+INPUTS
+==========================================*/
+
+.input-group{
+
+    margin-bottom:22px;
+
+}
+
+.input-group label{
+
+    display:block;
+
+    color:#f1f1f1;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    margin-bottom:10px;
+
+}
+
+.input-group input{
+
+    width:100%;
+
+    padding:18px;
+
+    border-radius:15px;
+
+    border:2px solid #333;
+
+    background:#1f1f1f;
+
+    color:white;
+
+    font-size:15px;
+
+    transition:.35s;
+
+}
+
+.input-group input::placeholder{
+
+    color:#777;
+
+}
+
+.input-group input:focus{
+
+    outline:none;
+
+    border-color:#e23744;
+
+    box-shadow:
+    0 0 0 5px rgba(226,55,68,.15);
+
+}
+
+/*==========================================
+LOGIN BUTTON
+==========================================*/
+
+.login-btn{
+
+    width:100%;
+
+    margin-top:10px;
+
+    padding:18px;
+
+    border:none;
+
+    border-radius:15px;
+
+    cursor:pointer;
+
+    font-size:17px;
+
+    font-weight:700;
+
+    color:white;
+
+    background:
+    linear-gradient(
+        135deg,
+        #e23744,
+        #ff5a5f
+    );
+
+    transition:.35s;
+
+    box-shadow:
+    0 15px 35px rgba(226,55,68,.35);
+
+}
+
+.login-btn:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:
+    0 25px 50px rgba(226,55,68,.5);
+
+}
+
+/*==========================================
+SECURITY BOX
+==========================================*/
+
+.security-box{
+
+    margin-top:28px;
+
+    padding:18px;
+
+    border-radius:16px;
+
+    background:#1a1a1a;
+
+    border-left:5px solid #e23744;
+
+    color:#dddddd;
+
+    font-size:14px;
+
+    line-height:24px;
+
+}
+
+/*==========================================
+FOOTER
+==========================================*/
+
+.login-footer{
+
+    text-align:center;
+
+    margin-top:30px;
+
+    color:#888;
+
+    font-size:14px;
+
+    line-height:24px;
+
+}
+
+/*==========================================
+SCROLLBAR
+==========================================*/
+
+::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#111;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#e23744;
+
+    border-radius:20px;
+
+}
+
+/*==========================================
+RESPONSIVE
+==========================================*/
+
+@media(max-width:1100px){
+
+    .admin-login-page{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .admin-left{
+
+        min-height:500px;
+
+        padding:50px;
+
+    }
+
+    .left-content h1{
+
+        font-size:52px;
+
+        line-height:60px;
+
+    }
+
+    .left-content h1 span{
+
+        font-size:60px;
+
+    }
+
+}
+
+@media(max-width:650px){
+
+    .admin-right{
+
+        padding:25px;
+
+    }
+
+    .admin-login-box{
+
+        padding:35px 25px;
+
+    }
+
+    .left-content h1{
+
+        font-size:40px;
+
+        line-height:48px;
+
+    }
+
+    .left-content h1 span{
+
+        font-size:46px;
+
+    }
+
+    .left-content p{
+
+        font-size:16px;
+
+        line-height:28px;
+
+    }
+
+    .feature{
+
+        padding:15px;
+
+    }
+
+    .badge{
+
+        font-size:13px;
+
+    }
+
+}

@@ -26,7 +26,10 @@ const AdminLogin = () => {
 
             console.log(res.data);
 
-            localStorage.setItem("adminToken", res.data.token);
+            localStorage.setItem(
+                "adminToken",
+                res.data.token
+            );
 
             localStorage.setItem(
                 "admin",
@@ -39,10 +42,11 @@ const AdminLogin = () => {
 
         } catch (err) {
 
-            console.log(err);
+            console.log(err.response?.data);
 
             alert(
-                err.response?.data?.message || "Login Failed"
+                err.response?.data?.message ||
+                "Login Failed"
             );
 
         }
@@ -51,42 +55,138 @@ const AdminLogin = () => {
 
     return (
 
-        <div className="admin-login">
+        <div className="admin-login-page">
 
-            <form
-                className="admin-login-box"
-                onSubmit={handleLogin}
-            >
+            {/* Left Section */}
 
-                <h1>Admin Login</h1>
+            <div className="admin-left">
 
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) =>
-                        setEmail(e.target.value)
-                    }
-                    required
-                />
+                <div className="overlay"></div>
 
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) =>
-                        setPassword(e.target.value)
-                    }
-                    required
-                />
+                <div className="left-content">
 
-                <button type="submit">
+                    <span className="badge">
+                        🔒 Secure Admin Portal
+                    </span>
 
-                    Login
+                    <h1>
 
-                </button>
+                        Zero Waste Food
 
-            </form>
+                        <br />
+
+                        <span>Administration Panel</span>
+
+                    </h1>
+
+                    <p>
+
+                        Manage Restaurants, NGOs, Users,
+                        Donations and monitor everything
+                        from one secure dashboard.
+
+                    </p>
+
+                    <div className="feature-list">
+
+                        <div className="feature">
+                            📊 Live Analytics Dashboard
+                        </div>
+
+                        <div className="feature">
+                            🍱 Donation Monitoring
+                        </div>
+
+                        <div className="feature">
+                            🏢 NGO Verification
+                        </div>
+
+                        <div className="feature">
+                            👥 User Management
+                        </div>
+
+                        <div className="feature">
+                            📈 Reports & Statistics
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {/* Right Section */}
+
+            <div className="admin-right">
+
+                <form
+                    className="admin-login-box"
+                    onSubmit={handleLogin}
+                >
+
+                    <div className="login-logo">
+                        🌿
+                    </div>
+
+                    <h2>Welcome Back</h2>
+
+                    <p>
+                        Login to continue to the
+                        Admin Dashboard
+                    </p>
+
+                    <div className="input-group">
+
+                        <label>Email</label>
+
+                        <input
+                            type="email"
+                            placeholder="admin@gmail.com"
+                            value={email}
+                            onChange={(e) =>
+                                setEmail(e.target.value)
+                            }
+                            required
+                        />
+
+                    </div>
+
+                    <div className="input-group">
+
+                        <label>Password</label>
+
+                        <input
+                            type="password"
+                            placeholder="Enter Password"
+                            value={password}
+                            onChange={(e) =>
+                                setPassword(e.target.value)
+                            }
+                            required
+                        />
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        className="login-btn"
+                    >
+                        Login to Dashboard →
+                    </button>
+
+                    <div className="security-box">
+                        🔐 Authorized Administrators Only
+                    </div>
+
+                    <div className="login-footer">
+                        © 2026 Zero Waste Food
+                        <br />
+                        Admin Control Center
+                    </div>
+
+                </form>
+
+            </div>
 
         </div>
 

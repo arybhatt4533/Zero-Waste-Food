@@ -7,6 +7,7 @@ import NgoDashboard from './pages/NgoDashboard';  // 'S' बड़ा है तो
 import NgoProfile from "./pages/NgoProfile";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
+import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
 
 function App() {
   return (
@@ -21,7 +22,14 @@ function App() {
           element={<NgoProfile />}
         />
         <Route path="/admin-login" element={<AdminLogin />} />
-        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route
+          path="/admin-dashboard"
+          element={
+            <ProtectedAdminRoute>
+              <AdminDashboard />
+            </ProtectedAdminRoute>
+          }
+        />
       </Routes>
     </Router>
   );

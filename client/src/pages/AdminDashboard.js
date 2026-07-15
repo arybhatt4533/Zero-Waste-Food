@@ -19,7 +19,16 @@ const AdminDashboard = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+
+        const token = localStorage.getItem("adminToken");
+
+        if (!token) {
+            navigate("/admin-login");
+            return;
+        }
+
         fetchDashboard();
+
     }, []);
 
     const fetchDashboard = async () => {
@@ -40,8 +49,12 @@ const AdminDashboard = () => {
     };
 
     const logout = () => {
+
+        localStorage.removeItem("adminToken");
         localStorage.removeItem("admin");
+
         navigate("/admin-login");
+
     };
 
     return (
