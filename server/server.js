@@ -1,9 +1,12 @@
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const pool = require('./db');
 const ngoRoutes = require("./routes/ngo");
-require('dotenv').config();
+const adminRoutes = require("./routes/admin");
+
 
 const app = express();
 
@@ -12,6 +15,7 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 app.use("/ngo", ngoRoutes);
+app.use("/admin", adminRoutes);
 
 // Routes
 const authRoutes = require('./routes/auth');
@@ -30,7 +34,9 @@ app.get('/test-db', async (req, res) => {
         res.status(500).json({ error: "Database connection failed" });
     }
 });
-
+app.get("/hello", (req, res) => {
+    res.send("Hello Server");
+});
 // Agar tum Frontend (HTML/CSS) direct server se serve karna chahti ho:
 // app.use(express.static(path.join(__dirname, '../client/build')));
 

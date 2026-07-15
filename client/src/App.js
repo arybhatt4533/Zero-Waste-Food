@@ -5,6 +5,8 @@ import Donation from './pages/Donation';
 import Signup from './pages/Signup';
 import NgoDashboard from './pages/NgoDashboard';  // 'S' बड़ा है तो यहाँ भी बड़ा रखें
 import NgoProfile from "./pages/NgoProfile";
+import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
           path="/ngo-profile"
           element={<NgoProfile />}
         />
+        <Route path="/admin-login" element={<AdminLogin />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
       </Routes>
     </Router>
   );
