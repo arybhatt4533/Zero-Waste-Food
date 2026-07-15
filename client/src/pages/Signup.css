@@ -1,154 +1,261 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Poppins',sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
-body{
-    margin:0;
-    padding:0;
+body {
+    overflow-x: hidden;
+    background: #111;
 }
 
-.signup-container{
-    width:100%;
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    background:
-    linear-gradient(rgba(0,0,0,.25),rgba(0,0,0,.25)),
-    url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTsCIn_v3P1MVwpUsZpqyaU-AyAXYV6xBfzZN8rUlHwA&s=10");
-
-    background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
+/* =========================
+CONTAINER & BACKGROUND
+========================= */
+.signup-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    background: 
+        radial-gradient(circle at top left, #ff4d5a33, transparent 35%),
+        radial-gradient(circle at bottom right, #ff6b0030, transparent 35%),
+        linear-gradient(135deg, #1a1a1a, #111, #090909);
 }
 
-.signup-card{
-    width:900px;
-    height:520px;
-    display:flex;
-    overflow:hidden;
-    border-radius:20px;
-    background:#e52b2b;
-    box-shadow:0 15px 35px rgba(0,0,0,.35);
+/* =========================
+CARD DESIGN
+========================= */
+.signup-card {
+    width: 1300px;
+    min-height: 760px;
+    display: flex;
+    border-radius: 30px;
+    overflow: hidden;
+    background: rgba(25, 25, 25, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(25px);
+    box-shadow: 0 0 60px rgba(226, 55, 68, 0.18);
 }
 
-.signup-left{
-    flex:1;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-    color:#fff;
-    padding:30px;
+/* =========================
+LEFT SECTION (BRANDING)
+========================= */
+.signup-left {
+    flex: 1.1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
 }
 
-.signup-image{
-    width:300px;
-    margin-bottom:20px;
+/* Left side background glow animation */
+.signup-left::before {
+    content: "";
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(226, 55, 68, 0.9), rgba(255, 90, 95, 0.45), transparent 70%);
+    filter: blur(120px);
+    animation: rotateGlow 15s linear infinite;
+    opacity: 0.45;
+    z-index: 1;
 }
 
-.signup-left h1{
-    font-size:34px;
-    margin-bottom:10px;
+@keyframes rotateGlow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
-.signup-left p{
-    font-size:16px;
-    text-align:center;
+/* Content styling over glow */
+.signup-image {
+    width: 450px;
+    height: 240px;
+    object-fit: cover;
+    /* border-radius: 50%; <-- इसे हटा दें या बदल दें */
+    border-radius: 16px; /* इससे हल्का rounded corners वाला परफेक्ट square लुक मिलेगा */
+    margin-bottom: 25px;
+    border: 3px solid #e23744;
+    box-shadow: 0 0 30px rgba(226, 55, 68, 0.5);
+    position: relative;
+    z-index: 10;
 }
 
-.signup-right{
-    flex:1;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:25px;
+.signup-left h1 {
+    font-size: 54px;
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 10;
+    background: linear-gradient(90deg, #ffffff, #ffd2d2, #ff8f8f, #e23744, #ffffff);
+    background-size: 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 8s linear infinite;
 }
 
-.signup-box{
-    width:340px;
-    background:#fff;
-    padding:35px;
-    border-radius:15px;
-    box-shadow:0 10px 25px rgba(0,0,0,.2);
+@keyframes shine {
+    0% { background-position: 0%; }
+    100% { background-position: 400%; }
 }
 
-.signup-box h2{
-    text-align:center;
-    margin-bottom:25px;
-    color:#222;
+.signup-left p {
+    color: #d4d4d4;
+    width: 85%;
+    margin: 0 auto;
+    line-height: 30px;
+    font-size: 18px;
+    position: relative;
+    z-index: 10;
 }
 
-.signup-box input,
-.signup-box select{
-    width:100%;
-    height:46px;
-    margin-bottom:16px;
-    padding:0 14px;
-    border:1px solid #ddd;
-    border-radius:8px;
-    outline:none;
-    font-size:15px;
+/* =========================
+RIGHT SECTION (FORM)
+========================= */
+.signup-right {
+    flex: 0.9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #171717;
+    padding: 40px;
 }
 
-.signup-box input:focus,
-.signup-box select:focus{
-    border-color:#ff3030;
+.signup-box {
+    width: 420px;
 }
 
-.signup-box button{
-    width:100%;
-    height:46px;
-    border:none;
-    border-radius:8px;
-    background:#8b1e1e;
-    color:#fff;
-    font-size:16px;
-    cursor:pointer;
-    transition:.3s;
+.signup-box h2 {
+    color: white;
+    text-align: center;
+    font-size: 38px;
+    font-weight: 700;
+    margin-bottom: 35px;
+    letter-spacing: 1px;
 }
 
-.signup-box button:hover{
-    background:#681414;
+/* =========================
+INPUTS & SELECT DROPDOWN
+========================= */
+.signup-box input, 
+.signup-box select {
+    width: 100%;
+    padding: 17px;
+    margin-bottom: 18px;
+    border-radius: 12px;
+    background: #242424;
+    border: 2px solid #333;
+    color: white;
+    outline: none;
+    transition: 0.3s ease;
+    font-size: 15px;
 }
 
-.signup-box p{
-    margin-top:18px;
-    text-align:center;
-    color:#555;
+/* Special drop-down alignment & styling */
+.signup-box select {
+    cursor: pointer;
+    appearance: none; /* remove default arrow */
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 18px;
+    padding-right: 45px;
 }
 
-.signup-box a{
-    color:#d62828;
-    font-weight:600;
-    text-decoration:none;
+.signup-box select option {
+    background: #242424;
+    color: white;
 }
 
-.signup-box a:hover{
-    text-decoration:underline;
+.signup-box input:focus, 
+.signup-box select:focus {
+    border-color: #e23744;
+    box-shadow: 0 0 18px rgba(226, 55, 68, 0.4);
 }
 
-@media(max-width:900px){
-
-.signup-card{
-    width:95%;
-    height:auto;
-    flex-direction:column;
+/* =========================
+BUTTONS
+========================= */
+.signup-box button[type="submit"] {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 17px;
+    font-weight: 700;
+    color: white;
+    background: linear-gradient(90deg, #e23744, #ff5a5f);
+    transition: 0.35s ease;
+    margin-top: 10px;
+    margin-bottom: 25px;
 }
 
-.signup-left{
-    padding:30px;
+.signup-box button[type="submit"]:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 35px rgba(226, 55, 68, 0.45);
 }
 
-.signup-image{
-    width:220px;
+/* =========================
+REDIRECT LINK / FOOTER
+========================= */
+.signup-box p {
+    text-align: center;
+    color: #bbb;
+    font-size: 15px;
 }
 
-.signup-box{
-    width:100%;
+.signup-box p a {
+    color: #ff6b6b;
+    text-decoration: none;
+    font-weight: 700;
+    margin-left: 5px;
+    transition: 0.3s ease;
 }
+
+.signup-box p a:hover {
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+}
+
+/* =========================
+RESPONSIVE DESIGN
+========================= */
+@media (max-width: 1024px) {
+    .signup-card {
+        flex-direction: column;
+        width: 90%;
+        min-height: auto;
+    }
+
+    .signup-left {
+        padding: 50px 30px;
+    }
+
+    .signup-left h1 {
+        font-size: 40px;
+    }
+
+    .signup-image {
+        width: 140px;
+        height: 140px;
+    }
+
+    .signup-right {
+        padding: 50px 30px;
+    }
+
+    .signup-box {
+        width: 100%;
+    }
 }

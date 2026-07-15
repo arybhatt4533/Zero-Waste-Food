@@ -1,155 +1,247 @@
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Poppins,sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
-body{
-background:#f5f7fb;
+body {
+    background: #111;
+    overflow-x: hidden;
 }
 
-.admin-dashboard{
-padding:35px;
-min-height:100vh;
-background:#eef3fb;
+/* =========================
+MAIN DASHBOARD CONTAINER
+========================= */
+.admin-dashboard {
+    padding: 40px 10%;
+    min-height: 100vh;
+    background: 
+        radial-gradient(circle at top left, #ff4d5a1a, transparent 40%),
+        radial-gradient(circle at bottom right, #ff6b0012, transparent 40%),
+        linear-gradient(135deg, #121212, #111, #080808);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
 }
 
-.admin-navbar{
-
-display:flex;
-justify-content:space-between;
-align-items:center;
-
-background:#fff;
-padding:20px 35px;
-
-border-radius:18px;
-
-box-shadow:0 10px 30px rgba(0,0,0,.08);
-
-margin-bottom:35px;
-
+/* =========================
+NAVIGATION BAR
+========================= */
+.admin-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(25, 25, 25, 0.75);
+    padding: 22px 40px;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(226, 55, 68, 0.05);
+    margin-bottom: 35px;
 }
 
-.admin-user{
-display:flex;
-align-items:center;
-gap:15px;
+.admin-navbar h1 {
+    font-size: 24px;
+    font-weight: 800;
+    background: linear-gradient(90deg, #fff, #ff8f8f, #e23744);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-.admin-user button{
-
-padding:10px 22px;
-
-border:none;
-
-border-radius:8px;
-
-background:#2563eb;
-
-color:#fff;
-
-cursor:pointer;
-
+.admin-user {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: #eee;
+    font-weight: 500;
 }
 
-.dashboard-cards{
-
-display:grid;
-
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-
-gap:25px;
-
-margin-bottom:40px;
-
+/* Logout / Admin Buttons */
+.admin-user button {
+    padding: 11px 24px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #e23744, #ff5a5f);
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(226, 55, 68, 0.2);
 }
 
-.card{
-
-background:#fff;
-
-padding:30px;
-
-border-radius:18px;
-
-box-shadow:0 10px 30px rgba(0,0,0,.08);
-
+.admin-user button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(226, 55, 68, 0.45);
 }
 
-.card h3{
-
-color:#666;
-
-margin-bottom:15px;
-
+/* =========================
+METRIC CARDS GRID
+========================= */
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
 }
 
-.card h1{
-
-font-size:42px;
-
+.card {
+    background: rgba(23, 23, 23, 0.85);
+    padding: 30px;
+    border-radius: 22px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.blue{
-border-left:6px solid #2563eb;
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
 }
 
-.green{
-border-left:6px solid #16a34a;
+.card h3 {
+    color: #aaa;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+    margin-bottom: 12px;
 }
 
-.orange{
-border-left:6px solid #f59e0b;
+.card h1 {
+    font-size: 42px;
+    font-weight: 800;
+    color: #fff;
 }
 
-.red{
-border-left:6px solid #ef4444;
+/* Sidebar Border Colors with Glow Effect */
+.blue {
+    border-left: 6px solid #2563eb;
+}
+.card.blue:hover {
+    border-color: #2563eb;
+    box-shadow: 0 15px 30px rgba(37, 99, 235, 0.15);
 }
 
-.table-section{
-
-background:#fff;
-
-padding:30px;
-
-border-radius:18px;
-
-box-shadow:0 10px 30px rgba(0,0,0,.08);
-
+.green {
+    border-left: 6px solid #16a34a;
+}
+.card.green:hover {
+    border-color: #16a34a;
+    box-shadow: 0 15px 30px rgba(22, 163, 74, 0.15);
 }
 
-table{
-
-width:100%;
-
-border-collapse:collapse;
-
-margin-top:20px;
-
+.orange {
+    border-left: 6px solid #f59e0b;
+}
+.card.orange:hover {
+    border-color: #f59e0b;
+    box-shadow: 0 15px 30px rgba(245, 158, 11, 0.15);
 }
 
-th,td{
-
-padding:16px;
-
-text-align:left;
-
-border-bottom:1px solid #eee;
-
+.red {
+    border-left: 6px solid #ef4444;
+}
+.card.red:hover {
+    border-color: #ef4444;
+    box-shadow: 0 15px 30px rgba(239, 68, 68, 0.15);
 }
 
-th{
-
-background:#2563eb;
-
-color:#fff;
-
+/* =========================
+TABLE SECTION (DATA GRID)
+========================= */
+.table-section {
+    background: rgba(25, 25, 25, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(25px);
+    padding: 35px;
+    border-radius: 24px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
 }
 
-tr:hover{
+.table-section h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #fff;
+}
 
-background:#f8fafc;
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 25px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
 
+th, td {
+    padding: 18px 24px;
+    text-align: left;
+}
+
+th {
+    background: #1f1f1f;
+    color: #ff6b6b;
+    font-weight: 700;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+}
+
+td {
+    background: #171717;
+    color: #ccc;
+    font-size: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    transition: all 0.25s ease;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:hover td {
+    background: #222;
+    color: #fff;
+}
+
+/* Status badging (Optional enhancement for table values) */
+td span.status {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+/* =========================
+RESPONSIVE DESIGN
+========================= */
+@media (max-width: 1024px) {
+    .admin-dashboard {
+        padding: 30px 5%;
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-navbar {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+        padding: 25px;
+    }
+    
+    .table-section {
+        padding: 20px;
+        overflow-x: auto;
+    }
+    
+    table {
+        min-width: 600px; /* Enables horizontal scroll on small mobiles */
+    }
 }

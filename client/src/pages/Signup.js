@@ -37,7 +37,7 @@ const Signup = () => {
                     <h1>Zero Waste Food</h1>
 
                     <p>
-                        Create your account and start saving food.
+                        Create your account and start saving food. Your one donation can help feed many people in need. Join us in our mission to reduce food waste and make a difference in the world.
                     </p>
 
                 </div>
