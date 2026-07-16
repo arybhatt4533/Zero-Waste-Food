@@ -60,11 +60,9 @@ router.post("/register", async (req, res) => {
 // =====================================
 
 router.post("/login", async (req, res) => {
-
     const { email, password, role } = req.body;
 
     try {
-
         const result = await pool.query(
             "SELECT * FROM users WHERE email = $1 AND role = $2",
             [email, role]
@@ -91,52 +89,37 @@ router.post("/login", async (req, res) => {
             });
         }
 
+        // 🌟 मुख्य बदलाव यहाँ है: टोकन के पेलोड में अब 'role' भी जा रहा है!
         const token = jwt.sign(
             {
-                user_id: user.user_id
+                user_id: user.user_id,
+                role: user.role // 👈 ये लाइन डालना बेहद ज़रूरी था
             },
-            "mysecretkey",
+            process.env.JWT_SECRET || "mysecretkey", // 👈 .env फ़ाइल का सीक्रेट, या डिफ़ॉल्ट "mysecretkey"
             {
                 expiresIn: "1h"
             }
         );
 
         res.json({
-
             success: true,
-
             message: "Login Successful",
-
             token,
-
             user: {
-
                 id: user.user_id,
-
                 name: user.name,
-
                 email: user.email,
-
                 role: user.role
-
             }
-
         });
 
     } catch (err) {
-
         console.error(err);
-
         res.status(500).json({
-
             success: false,
-
             error: err.message
-
         });
-
     }
-
 });
 
 module.exports = router;

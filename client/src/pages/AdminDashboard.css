@@ -1,247 +1,355 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+/* ==========================================================================
+   PART 1: ZOMATO RED & GLASSMORPHISM BASE LAYER & NAVBAR
+   ========================================================================== */
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+/* Theme Variables for easy customization if needed */
+:root {
+    --zomato-red: #E23744;
+    --zomato-dark-red: #CB202D;
+    --zomato-light-red: #FFF0F2;
+    --glass-bg: rgba(255, 255, 255, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.4);
+    --glass-shadow: rgba(226, 55, 68, 0.08);
+    --text-dark: #1C1C1C;
+    --text-muted: #696969;
 }
 
-body {
-    background: #111;
-    overflow-x: hidden;
-}
-
-/* =========================
-MAIN DASHBOARD CONTAINER
-========================= */
+/* Base Body Adjustment */
 .admin-dashboard {
-    padding: 40px 10%;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #FFF5F6 0%, #F9F9FB 100%);
     min-height: 100vh;
-    background: 
-        radial-gradient(circle at top left, #ff4d5a1a, transparent 40%),
-        radial-gradient(circle at bottom right, #ff6b0012, transparent 40%),
-        linear-gradient(135deg, #121212, #111, #080808);
-    color: #fff;
-    display: flex;
-    flex-direction: column;
+    color: var(--text-dark);
+    padding-bottom: 50px;
+    letter-spacing: -0.2px;
 }
 
-/* =========================
-NAVIGATION BAR
-========================= */
+/* 1. TOP NAVBAR (Modern Glossy Glass) */
 .admin-navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(25, 25, 25, 0.75);
-    padding: 22px 40px;
-    border-radius: 24px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(20px);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(226, 55, 68, 0.05);
-    margin-bottom: 35px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 16px 40px;
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: 0 4px 20px var(--glass-shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
-.admin-navbar h1 {
-    font-size: 24px;
+.admin-navbar h2 {
+    color: var(--zomato-red);
+    font-size: 1.5rem;
+    margin: 0;
     font-weight: 800;
-    background: linear-gradient(90deg, #fff, #ff8f8f, #e23744);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Logo icon element placeholder if needed */
+.admin-navbar h2::before {
+    content: "❤️";
+    font-size: 1.3rem;
 }
 
 .admin-user {
     display: flex;
     align-items: center;
-    gap: 15px;
-    color: #eee;
-    font-weight: 500;
+    gap: 16px;
 }
 
-/* Logout / Admin Buttons */
+.admin-user span {
+    font-weight: 600;
+    color: var(--zomato-dark-red);
+    font-size: 0.9rem;
+    background: var(--zomato-light-red);
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(226, 55, 68, 0.15);
+}
+
 .admin-user button {
-    padding: 11px 24px;
+    background: #2D2D2D;
+    color: #ffffff;
     border: none;
-    border-radius: 12px;
-    background: linear-gradient(90deg, #e23744, #ff5a5f);
-    color: #fff;
-    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(226, 55, 68, 0.2);
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
 }
 
 .admin-user button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(226, 55, 68, 0.45);
+    background: #000000;
+    transform: translateY(-1px);
+}
+/* ==========================================================================
+   PART 2: HORIZONTAL MENU TABS & GLOSSY STATS CARDS
+   ========================================================================== */
+
+/* 2. NAVIGATION SIDEBAR / HORIZONTAL MENU TABS */
+.admin-menu {
+    display: flex;
+    gap: 12px;
+    background: #1C1C1C; /* Dark Slate background for contrast */
+    padding: 14px 40px;
+    overflow-x: auto;
+    box-shadow: inset 0 -2px 10px rgba(0,0,0,0.2);
 }
 
-/* =========================
-METRIC CARDS GRID
-========================= */
+.admin-menu button {
+    background: transparent;
+    color: #A0A0A0;
+    border: none;
+    padding: 10px 22px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+}
+
+.admin-menu button:hover {
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.admin-menu button.active {
+    color: #FFFFFF;
+    background: var(--zomato-red);
+    box-shadow: 0 4px 15px rgba(226, 55, 68, 0.4);
+}
+
+/* 3. DASHBOARD STATS CARDS (Glassmorphism + Neon Hue) */
 .dashboard-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 25px;
-    margin-bottom: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    padding: 40px;
 }
 
 .card {
-    background: rgba(23, 23, 23, 0.85);
-    padding: 30px;
-    border-radius: 22px;
-    border: 1px solid rgba(255, 255, 255, 0.03);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 26px;
+    border-radius: 16px;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02), inset 0 1px 0 rgba(255,255,255,0.6);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(226, 55, 68, 0.12);
+    border-color: rgba(226, 55, 68, 0.2);
 }
 
 .card h3 {
-    color: #aaa;
-    font-size: 14px;
+    font-size: 0.85rem;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
-    font-weight: 600;
-    margin-bottom: 12px;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    margin: 0 0 12px 0;
+    font-weight: 700;
 }
 
 .card h1 {
-    font-size: 42px;
+    font-size: 2.4rem;
+    margin: 0;
     font-weight: 800;
-    color: #fff;
+    color: #000000;
 }
 
-/* Sidebar Border Colors with Glow Effect */
-.blue {
-    border-left: 6px solid #2563eb;
+/* Reddish Morphisam Custom Tokens for counts */
+.card.red-glow {
+    border-left: 4px solid var(--zomato-red);
 }
-.card.blue:hover {
-    border-color: #2563eb;
-    box-shadow: 0 15px 30px rgba(37, 99, 235, 0.15);
-}
-
-.green {
-    border-left: 6px solid #16a34a;
-}
-.card.green:hover {
-    border-color: #16a34a;
-    box-shadow: 0 15px 30px rgba(22, 163, 74, 0.15);
+.card.dark-glow {
+    border-left: 4px solid #1C1C1C;
 }
 
-.orange {
-    border-left: 6px solid #f59e0b;
-}
-.card.orange:hover {
-    border-color: #f59e0b;
-    box-shadow: 0 15px 30px rgba(245, 158, 11, 0.15);
-}
+/* ==========================================================================
+   PART 3: DATA TABLES, ACTION BUTTONS, & LOADING STATES
+   ========================================================================== */
 
-.red {
-    border-left: 6px solid #ef4444;
-}
-.card.red:hover {
-    border-color: #ef4444;
-    box-shadow: 0 15px 30px rgba(239, 68, 68, 0.15);
-}
-
-/* =========================
-TABLE SECTION (DATA GRID)
-========================= */
+/* 4. MAIN DATA SECTION CONTAINER */
 .table-section {
-    background: rgba(25, 25, 25, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(25px);
-    padding: 35px;
-    border-radius: 24px;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    margin: 0 40px 40px 40px;
+    padding: 30px;
+    border-radius: 18px;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
 }
 
 .table-section h2 {
-    font-size: 24px;
+    color: #1C1C1C;
+    font-size: 1.35rem;
+    margin-top: 0;
+    margin-bottom: 24px;
     font-weight: 700;
-    margin-bottom: 10px;
-    color: #fff;
+    position: relative;
+    padding-bottom: 10px;
 }
 
+.table-section h2::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background-color: var(--zomato-red);
+    border-radius: 2px;
+}
+
+/* 5. TABLE LAYOUT STYLE */
 table {
     width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    margin-top: 25px;
-    border-radius: 16px;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-th, td {
-    padding: 18px 24px;
+    border-collapse: collapse;
     text-align: left;
+    font-size: 0.95rem;
 }
 
 th {
-    background: #1f1f1f;
-    color: #ff6b6b;
+    background-color: rgba(0, 0, 0, 0.02);
+    color: #4A4A4A;
     font-weight: 700;
-    font-size: 15px;
+    padding: 16px;
+    border-bottom: 2px solid rgba(0,0,0,0.05);
     text-transform: uppercase;
-    letter-spacing: 1px;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.8rem;
+    letter-spacing: 0.6px;
 }
 
 td {
-    background: #171717;
-    color: #ccc;
-    font-size: 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-    transition: all 0.25s ease;
-}
-
-tr:last-child td {
-    border-bottom: none;
+    padding: 16px;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+    color: #353535;
+    font-weight: 500;
 }
 
 tr:hover td {
-    background: #222;
-    color: #fff;
+    background-color: rgba(226, 55, 68, 0.01);
 }
 
-/* Status badging (Optional enhancement for table values) */
-td span.status {
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 12px;
+/* 6. ZOMATO INSPIRED ACTION BUTTONS */
+button.approve-btn, 
+button.delete-btn {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-right: 8px;
+}
+
+/* Primary Action - Zomato Red Theme */
+button.approve-btn {
+    background-color: var(--zomato-red);
+    color: #FFFFFF;
+    box-shadow: 0 4px 12px rgba(226, 55, 68, 0.2);
+}
+
+button.approve-btn:hover {
+    background-color: var(--zomato-dark-red);
+    box-shadow: 0 4px 16px rgba(226, 55, 68, 0.35);
+    transform: translateY(-1px);
+}
+
+/* Secondary/Danger Action - Slate Gray Outline */
+button.delete-btn {
+    background-color: #ECECEC;
+    color: #4A4A4A;
+}
+
+button.delete-btn:hover {
+    background-color: #1C1C1C;
+    color: #FFFFFF;
+    transform: translateY(-1px);
+}
+
+/* 7. APP STATUS BADGES */
+.status {
+    font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 6px;
+    display: inline-block;
 }
 
-/* =========================
-RESPONSIVE DESIGN
-========================= */
-@media (max-width: 1024px) {
-    .admin-dashboard {
-        padding: 30px 5%;
-    }
+.status.pending {
+    background: #FFF3CD;
+    color: #856404;
 }
 
+.status.active, .status.completed {
+    background: #E2F9E9;
+    color: #1B5E20;
+}
+
+/* 8. LOADING STATE ANIMATION */
+.loading {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--zomato-red);
+    gap: 15px;
+}
+
+.loading::before {
+    content: "";
+    width: 35px;
+    height: 35px;
+    border: 4px solid var(--zomato-light-red);
+    border-top-color: var(--zomato-red);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* 9. MOBILE RESPONSIVE LAYER */
 @media (max-width: 768px) {
     .admin-navbar {
-        flex-direction: column;
-        gap: 20px;
-        text-align: center;
-        padding: 25px;
+        padding: 15px 20px;
     }
     
+    .admin-menu {
+        padding: 10px 20px;
+    }
+
+    .dashboard-cards {
+        padding: 20px;
+        gap: 16px;
+    }
+
     .table-section {
+        margin: 0 20px 20px 20px;
         padding: 20px;
         overflow-x: auto;
     }
-    
+
     table {
-        min-width: 600px; /* Enables horizontal scroll on small mobiles */
+        min-width: 650px;
     }
 }
