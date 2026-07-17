@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react"; // ✅ useCallback इम्पोर्ट किया
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./AdminDashboard.css";
@@ -32,56 +32,54 @@ const AdminDashboard = () => {
     const logout = useCallback(() => {
         localStorage.removeItem("adminToken");
         localStorage.removeItem("admin");
+        setLoading(false); // ✅ लॉगआउट होते समय लोडिंग बंद करें
         navigate("/admin-login");
     }, [navigate]);
 
-    // ✅ fetchDashboard को useCallback में रैप किया ताकि useEffect वार्निंग न दे
+    // fetchDashboard
     const fetchDashboard = useCallback(async () => {
+        setLoading(true); // ✅ रिक्वेस्ट शुरू होने पर लोडिंग ऑन करें
         try {
             const res = await axios.get("http://localhost:5000/admin/dashboard", getAuthConfig());
+            console.log("Admin Dashboard Data =>", res.data);
 
-            console.log(res.data);
-
-            setStats(res.data.stats || { users: 0, ngos: 0, donations: 0, claimed: 0 });
-            setRecentDonations(res.data.recentDonations || []);
-            setUsers(res.data.users || []);
-            setNgos(res.data.ngos || []);
-            setDonations(res.data.donations || []);
-
+            if (res.data) {
+                setStats(res.data.stats || { users: 0, ngos: 0, donations: 0, claimed: 0 });
+                setRecentDonations(res.data.recentDonations || []);
+                setUsers(res.data.users || []);
+                setNgos(res.data.ngos || []);
+                setDonations(res.data.donations || []);
+            }
         } catch (err) {
             console.error("Fetch Dashboard Error:", err);
             if (err.response && (err.response.status === 401 || err.response.status === 403)) {
                 alert("Session expired or Unauthorized. Please login again.");
                 logout();
+            } else {
+                alert("Backend server is not responding or returned an error.");
             }
         } finally {
-            setLoading(false); // ✅ setLoading का यहाँ सही इस्तेमाल हो रहा है
+            setLoading(false); // ✅ हर हाल में लोडिंग को फॉल्स करें
         }
     }, [getAuthConfig, logout]);
 
     useEffect(() => {
         const token = localStorage.getItem("adminToken");
-
         if (!token) {
+            setLoading(false); // ✅ टोकन न होने पर लोडिंग फॉल्स करें ताकि रीडायरेक्ट हो सके
             navigate("/admin-login");
             return;
         }
-
         fetchDashboard();
-    }, [navigate, fetchDashboard]); // ✅ 'fetchDashboard' को डिपेंडेंसी में डाल दिया, अब कोई वार्निंग नहीं आएगी!
+    }, [navigate, fetchDashboard]);
 
     // ============================
     // DELETE USER
     // ============================
     const deleteUser = async (id) => {
         if (!window.confirm("Delete this user?")) return;
-
         try {
-            await axios.delete(
-                `http://localhost:5000/admin/users/${id}`,
-                getAuthConfig()
-            );
-
+            await axios.delete(`http://localhost:5000/admin/users/${id}`, getAuthConfig());
             alert("User Deleted Successfully");
             fetchDashboard();
         } catch (err) {
@@ -95,12 +93,7 @@ const AdminDashboard = () => {
     // ============================
     const approveNgo = async (id) => {
         try {
-            await axios.put(
-                `http://localhost:5000/admin/ngos/${id}/approve`,
-                {},
-                getAuthConfig()
-            );
-
+            await axios.put(`http://localhost:5000/admin/ngos/${id}/approve`, {}, getAuthConfig());
             alert("NGO Approved");
             fetchDashboard();
         } catch (err) {
@@ -114,14 +107,8 @@ const AdminDashboard = () => {
     // ============================
     const rejectNgo = async (id) => {
         if (!window.confirm("Reject this NGO?")) return;
-
         try {
-            await axios.put(
-                `http://localhost:5000/admin/ngos/${id}/reject`,
-                {},
-                getAuthConfig()
-            );
-
+            await axios.put(`http://localhost:5000/admin/ngos/${id}/reject`, {}, getAuthConfig());
             alert("NGO Rejected");
             fetchDashboard();
         } catch (err) {
@@ -135,13 +122,8 @@ const AdminDashboard = () => {
     // ============================
     const deleteDonation = async (id) => {
         if (!window.confirm("Delete this donation?")) return;
-
         try {
-            await axios.delete(
-                `http://localhost:5000/admin/donations/${id}`,
-                getAuthConfig()
-            );
-
+            await axios.delete(`http://localhost:5000/admin/donations/${id}`, getAuthConfig());
             alert("Donation Deleted");
             fetchDashboard();
         } catch (err) {
@@ -155,12 +137,7 @@ const AdminDashboard = () => {
     // ============================
     const completeDonation = async (id) => {
         try {
-            await axios.put(
-                `http://localhost:5000/admin/donations/${id}/complete`,
-                {},
-                getAuthConfig()
-            );
-
+            await axios.put(`http://localhost:5000/admin/donations/${id}/complete`, {}, getAuthConfig());
             alert("Donation Completed");
             fetchDashboard();
         } catch (err) {
@@ -170,7 +147,12 @@ const AdminDashboard = () => {
     };
 
     if (loading) {
-        return <div className="loading">Loading Admin Panel...</div>;
+        return (
+            <div className="loading-container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>
+                <div className="loader"></div>
+                <h2>Loading Admin Panel...</h2>
+            </div>
+        );
     }
 
     return (
@@ -186,30 +168,10 @@ const AdminDashboard = () => {
 
             {/* ================= MENU ================= */}
             <div className="admin-menu">
-                <button
-                    className={activeTab === "dashboard" ? "active" : ""}
-                    onClick={() => setActiveTab("dashboard")}
-                >
-                    📊 Dashboard
-                </button>
-                <button
-                    className={activeTab === "users" ? "active" : ""}
-                    onClick={() => setActiveTab("users")}
-                >
-                    👥 Manage Users
-                </button>
-                <button
-                    className={activeTab === "ngos" ? "active" : ""}
-                    onClick={() => setActiveTab("ngos")}
-                >
-                    ❤️ Manage NGOs
-                </button>
-                <button
-                    className={activeTab === "donations" ? "active" : ""}
-                    onClick={() => setActiveTab("donations")}
-                >
-                    🍱 Manage Donations
-                </button>
+                <button className={activeTab === "dashboard" ? "active" : ""} onClick={() => setActiveTab("dashboard")}>📊 Dashboard</button>
+                <button className={activeTab === "users" ? "active" : ""} onClick={() => setActiveTab("users")}>👥 Manage Users</button>
+                <button className={activeTab === "ngos" ? "active" : ""} onClick={() => setActiveTab("ngos")}>❤️ Manage NGOs</button>
+                <button className={activeTab === "donations" ? "active" : ""} onClick={() => setActiveTab("donations")}>🍱 Manage Donations</button>
             </div>
 
             {/* ================= DASHBOARD ================= */}
@@ -246,18 +208,18 @@ const AdminDashboard = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {recentDonations.map((item) => (
-                                    <tr key={item.id}>
-                                        <td>{item.food_name}</td>
-                                        <td>{item.restaurant_name}</td>
-                                        <td>{item.ngo_name || "-"}</td>
-                                        <td>
-                                            <span className="status">
-                                                {item.status}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                ))}
+                                {recentDonations.length === 0 ? (
+                                    <tr><td colSpan="4" style={{ textAlign: 'center' }}>No recent donations found.</td></tr>
+                                ) : (
+                                    recentDonations.map((item) => (
+                                        <tr key={item.id}>
+                                            <td>{item.food_name}</td>
+                                            <td>{item.restaurant_name}</td>
+                                            <td>{item.ngo_name || "-"}</td>
+                                            <td><span className="status">{item.status}</span></td>
+                                        </tr>
+                                    ))
+                                )}
                             </tbody>
                         </table>
                     </div>
@@ -279,22 +241,21 @@ const AdminDashboard = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {users.map(user => (
-                                <tr key={user.id}>
-                                    <td>{user.id}</td>
-                                    <td>{user.name}</td>
-                                    <td>{user.email}</td>
-                                    <td>{user.role}</td>
-                                    <td>
-                                        <button
-                                            className="delete-btn"
-                                            onClick={() => deleteUser(user.id)}
-                                        >
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
+                            {users.length === 0 ? (
+                                <tr><td colSpan="5" style={{ textAlign: 'center' }}>No users found.</td></tr>
+                            ) : (
+                                users.map(user => (
+                                    <tr key={user.id}>
+                                        <td>{user.id}</td>
+                                        <td>{user.name}</td>
+                                        <td>{user.email}</td>
+                                        <td>{user.role}</td>
+                                        <td>
+                                            <button className="delete-btn" onClick={() => deleteUser(user.id)}>Delete</button>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
                     </table>
                 </div>
@@ -315,28 +276,22 @@ const AdminDashboard = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {ngos.map(ngo => (
-                                <tr key={ngo.id}>
-                                    <td>{ngo.id}</td>
-                                    <td>{ngo.name}</td>
-                                    <td>{ngo.email}</td>
-                                    <td>{ngo.status}</td>
-                                    <td>
-                                        <button
-                                            className="approve-btn"
-                                            onClick={() => approveNgo(ngo.id)}
-                                        >
-                                            Approve
-                                        </button>
-                                        <button
-                                            className="delete-btn"
-                                            onClick={() => rejectNgo(ngo.id)}
-                                        >
-                                            Reject
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
+                            {ngos.length === 0 ? (
+                                <tr><td colSpan="5" style={{ textAlign: 'center' }}>No NGOs found.</td></tr>
+                            ) : (
+                                ngos.map(ngo => (
+                                    <tr key={ngo.id}>
+                                        <td>{ngo.id}</td>
+                                        <td>{ngo.name}</td>
+                                        <td>{ngo.email}</td>
+                                        <td>{ngo.status}</td>
+                                        <td>
+                                            <button className="approve-btn" onClick={() => approveNgo(ngo.id)}>Approve</button>
+                                            <button className="delete-btn" onClick={() => rejectNgo(ngo.id)}>Reject</button>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
                     </table>
                 </div>
@@ -357,28 +312,22 @@ const AdminDashboard = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {donations.map(item => (
-                                <tr key={item.id}>
-                                    <td>{item.food_name}</td>
-                                    <td>{item.restaurant_name}</td>
-                                    <td>{item.ngo_name || "-"}</td>
-                                    <td>{item.status}</td>
-                                    <td>
-                                        <button
-                                            className="approve-btn"
-                                            onClick={() => completeDonation(item.id)}
-                                        >
-                                            Complete
-                                        </button>
-                                        <button
-                                            className="delete-btn"
-                                            onClick={() => deleteDonation(item.id)}
-                                        >
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
+                            {donations.length === 0 ? (
+                                <tr><td colSpan="5" style={{ textAlign: 'center' }}>No donations found.</td></tr>
+                            ) : (
+                                donations.map(item => (
+                                    <tr key={item.id}>
+                                        <td>{item.food_name}</td>
+                                        <td>{item.restaurant_name}</td>
+                                        <td>{item.ngo_name || "-"}</td>
+                                        <td>{item.status}</td>
+                                        <td>
+                                            <button className="approve-btn" onClick={() => completeDonation(item.id)}>Complete</button>
+                                            <button className="delete-btn" onClick={() => deleteDonation(item.id)}>Delete</button>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
                     </table>
                 </div>

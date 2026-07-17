@@ -1,3 +1,7 @@
+console.log("PATCH /claim hit");
+console.log("Params:", req.params);
+console.log("Body:", req.body);
+
 const express = require("express");
 const router = express.Router();
 const pool = require("../db");
@@ -115,55 +119,60 @@ router.get("/", async (req, res) => {
 
 router.patch("/claim/:id", async (req, res) => {
 
+     console.log("🔥 Claim API Hit");
+    console.log("Donation ID:", req.params.id);
+    console.log("Body:", req.body);
+
     const { id } = req.params;
     const { ngo_id } = req.body;
 
     try {
 
-        const result = await pool.query(
-
-            `
-            UPDATE donations
-            SET
-                status='claimed',
-                pickup_status='claimed',
-                ngo_id=$1,
-                claimed_at=NOW()
-            WHERE id=$2
-            RETURNING *
-            `,
-
-            [ngo_id, id]
-
+        // पहले check करो कि donation available है
+        const check = await pool.query(
+            "SELECT * FROM donations WHERE id=$1",
+            [id]
         );
 
-        if (result.rows.length === 0) {
-
+        if (check.rows.length === 0) {
             return res.status(404).json({
                 success: false,
-                message: "Donation Not Found"
+                error: "Donation not found"
             });
-
         }
 
-        res.json({
+        if (check.rows[0].status === "claimed") {
+            return res.status(400).json({
+                success: false,
+                error: "Donation already claimed"
+            });
+        }
 
+        const result = await pool.query(
+            `UPDATE donations
+             SET
+                 status='claimed',
+                 pickup_status='claimed',
+                 ngo_id=$1,
+                 claimed_at=NOW()
+             WHERE id=$2
+             RETURNING *`,
+            [ngo_id, id]
+        );
+
+        res.json({
             success: true,
             message: "Donation Claimed Successfully",
-
             donation: result.rows[0]
-
         });
 
     } catch (err) {
-
         console.log(err);
 
         res.status(500).json({
             success: false,
             error: err.message
         });
-
     }
 
 });

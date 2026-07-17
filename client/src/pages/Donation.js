@@ -54,63 +54,81 @@ const Donation = () => {
 
     const handleDonate = async (e) => {
         e.preventDefault();
-        console.log("[DONATION] 1️⃣ Form submitted with data:", formData);
 
-        // ✅ Validate file if provided
+        console.log("[DONATION] 1️⃣ Form submitted:", formData);
+
         if (formData.file && !validateFile(formData.file)) {
-            console.error("[DONATION] ❌ File validation failed");
             return;
         }
 
         setIsLoading(true);
 
-        const data = new FormData();
-        data.append('foodName', formData.foodName);
-        data.append('quantity', formData.quantity);
-        data.append('restaurantName', formData.restaurantName);
-        data.append('expiry', formData.expiry);
-        data.append('location', formData.location);
-        data.append('foodImage', formData.file); // Can be null, that's fine
-
-        // ✅ DEBUG: Log FormData contents
-        console.log("[DONATION] 2️⃣ FormData contents:");
-        for (let pair of data.entries()) {
-            console.log(`  📋 ${pair[0]}: ${pair[1] instanceof File ? `File(${pair[1].name}, ${pair[1].size} bytes)` : pair[1]}`);
-        }
-
         try {
-            console.log("[DONATION] 3️⃣ Sending POST request to http://localhost:5000/donations");
-            const response = await axios.post('http://localhost:5000/donations', data, {
-                headers: { 'Content-Type': 'multipart/form-data' }
+
+            const data = new FormData();
+
+            data.append("foodName", formData.foodName);
+            data.append("quantity", formData.quantity);
+            data.append("restaurantName", formData.restaurantName);
+            data.append("expiry", formData.expiry);
+            data.append("location", formData.location);
+
+            if (formData.file) {
+                data.append("foodImage", formData.file);
+            }
+
+            // 👇 Logged-in donor id
+            const user = JSON.parse(localStorage.getItem("user"));
+
+            if (user && user.id) {
+                data.append("user_id", user.id);
+            }
+
+            console.log("========= FormData =========");
+
+            for (const pair of data.entries()) {
+                console.log(pair[0], pair[1]);
+            }
+
+            const response = await axios.post(
+                "http://localhost:5000/donations",
+                data,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    }
+                }
+            );
+
+            console.log("✅ Donation Success:", response.data);
+
+            alert("✅ Donation Posted Successfully!");
+
+            setFormData({
+                foodName: "",
+                quantity: "",
+                restaurantName: "",
+                expiry: "",
+                location: "",
+                file: null
             });
 
-            console.log("[DONATION] 4️⃣ ✅ SUCCESS! Server response:", response.data);
-            alert("✅ Donation posted successfully!");
-
-            // ✅ CRITICAL FIX: Reset form data
-            setFormData({ foodName: '', quantity: '', restaurantName: '', expiry: '', location: '', file: null });
-            console.log("[DONATION] 5️⃣ Form data cleared");
-
-            // Navigate after brief delay for UX
-            setTimeout(() => navigate('/ngo-dashboard'), 500);
+            navigate("/ngo-dashboard");
 
         } catch (err) {
-            console.error("[DONATION] 4️⃣ ❌ ERROR DETAILS:");
-            console.error("  Response Status:", err.response?.status);
-            console.error("  Error Message:", err.response?.data?.message || err.message);
-            console.error("  Server Data:", err.response?.data);
-            console.error("  Full Error Object:", err);
 
-            // ✅ IMPROVED ERROR HANDLING: Show actual error message
-            const errorMessage = err.response?.data?.message ||
+            console.error(err);
+
+            alert(
                 err.response?.data?.error ||
-                err.message ||
-                "Unknown error occurred";
+                err.response?.data?.message ||
+                "Donation Failed"
+            );
 
-            alert(`❌ Error: ${errorMessage}`);
         } finally {
+
             setIsLoading(false);
-            console.log("[DONATION] Request completed - Loading state cleared");
+
         }
     };
 
@@ -127,8 +145,8 @@ const Donation = () => {
                     <li onClick={() => handleNavClick('footer')}>Contact</li>
                 </ul>
                 <button className="profile-btn">My Profile</button>
-            </nav> 
-            
+            </nav>
+
 
             {/* Hero Section */}
             <section className="hero" id="hero">

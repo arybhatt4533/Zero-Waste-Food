@@ -8,14 +8,13 @@ const NgoDashboard = () => {
     const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
-
     const user = JSON.parse(localStorage.getItem("user"));
 
     const fetchDonations = async () => {
         setLoading(true);
         try {
             const res = await axios.get('http://localhost:5000/donations');
-            // सिर्फ वो दिखाएं जिनका स्टेटस 'available' है
+            // सिर्फ वो दिखाएं जिनका स्टेटस 'claimed' नहीं है
             setFoodList(res.data.filter(item => item.status !== 'claimed'));
             console.log('[NGO_DASHBOARD] ✅ Donations fetched:', res.data);
         } catch (err) {
@@ -31,11 +30,25 @@ const NgoDashboard = () => {
     }, []);
 
     const handleClaim = async (id) => {
-
         console.log("Claim button clicked");
         console.log("Donation ID:", id);
 
-        const ngo_id = localStorage.getItem("user_id");
+        let ngo_id = localStorage.getItem("user_id");
+        if (!ngo_id) {
+            let ngo_id = localStorage.getItem("user_id");
+
+            if (!ngo_id) {
+                const storedUser = localStorage.getItem("user");
+
+                if (storedUser) {
+                    const parsedUser = JSON.parse(storedUser);
+
+                    ngo_id = parsedUser.id;  
+                }
+            }
+
+            console.log("NGO ID =", ngo_id);
+        }
 
         if (!id) {
             alert("Invalid Donation ID");
@@ -43,48 +56,31 @@ const NgoDashboard = () => {
         }
 
         if (!ngo_id) {
-            alert("NGO not logged in!");
+            alert("NGO not logged in! (user_id missing in storage)");
             return;
         }
 
         try {
-
             const response = await axios.patch(
-
                 `http://localhost:5000/donations/claim/${id}`,
-
-                {
-                    ngo_id
-                }
-
+                { ngo_id }
             );
 
             console.log("Server Response:", response.data);
-
             alert("🎉 Food Claimed Successfully!");
-
             await fetchDonations();
-
         } catch (error) {
-
             console.error("Claim Error:", error);
-
             if (error.response) {
-
                 console.log("Status:", error.response.status);
                 console.log("Data:", error.response.data);
-
                 alert(error.response.data.error || "Failed to claim food.");
-
             } else {
-
                 alert("Server not responding.");
-
             }
-
         }
-
     };
+
     const getTimeRemaining = (expiryTime) => {
         const now = new Date();
         const expiry = new Date(expiryTime);
@@ -99,387 +95,196 @@ const NgoDashboard = () => {
         if (hours < 3) return `⏰ ${hours}h ${minutes}m left`;
         return `⏰ ${hours}h left`;
     };
+
     /* ===========================
-   HERO IMAGE SLIDER
-=========================== */
-
+       HERO IMAGE SLIDER
+    =========================== */
     const heroImages = [
-
         "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1200",
-
         "https://images.unsplash.com/photo-1469571486292-b53601020f35?w=1200",
-
         "https://images.unsplash.com/photo-1593113598332-cd59a93f7d7e?w=1200",
-
         "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=1200",
-
         "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1200"
-
     ];
 
     const [currentImage, setCurrentImage] = useState(0);
 
     useEffect(() => {
-
         const interval = setInterval(() => {
-
-            setCurrentImage((prev) =>
-
-                (prev + 1) % heroImages.length
-
-            );
-
+            setCurrentImage((prev) => (prev + 1) % heroImages.length);
         }, 3000);
-
         return () => clearInterval(interval);
-
-    }, []);
+    }, [heroImages.length]);
 
     return (
-
         <div className="ngo-dashboard">
-
-            {/* ===========================
-            NAVBAR
-    ============================ */}
-
+            {/* NAVBAR */}
             <nav className="ngo-navbar">
-
                 <div className="ngo-logo">
-
                     🌿 <span>Zero Waste Food</span>
-
                 </div>
-
                 <div className="ngo-search">
-
                     <input
                         type="text"
                         placeholder="Search food, restaurant..."
                     />
-
                 </div>
-
                 <div className="ngo-nav-right">
-
-                    <button className="notification-btn">
-
-                        🔔
-
+                    <button className="notification-btn">🔔</button>
+                    <button
+                        className="profile-btn"
+                        onClick={() => navigate("/ngo-profile")}
+                    >
+                        👤 My Profile
                     </button>
-
-                    <div className="ngo-nav-right">
-
-                        <button
-                            className="profile-btn"
-                            onClick={() => navigate("/ngo-profile")}
-                        >
-                            👤 My Profile
-                        </button>
-
-                    </div>
-
                 </div>
-
             </nav>
 
-
-
-            {/* ===========================
-        PREMIUM HERO SECTION
-=========================== */}
-
+            {/* PREMIUM HERO SECTION */}
             <section className="ngo-hero">
-
                 <div className="hero-left">
-
                     <span className="hero-badge">
                         ❤️ Together We Fight Hunger
                     </span>
-
                     <h1>
                         Every Meal Saved
                         <br />
                         Creates A Smile
                     </h1>
-
                     <p className="hero-description">
-
                         Zero Waste Food is a community-driven platform that connects
                         restaurants, hotels, event organizers and generous donors
                         with verified NGOs. Instead of letting perfectly edible food
                         go to waste, we help deliver it safely to families and
                         individuals who truly need it.
-
                     </p>
-
                     <p className="hero-description">
-
                         Every donation is tracked from pickup to distribution,
                         ensuring transparency, food safety and maximum social impact.
                         Together we are reducing food waste, protecting the
                         environment and creating a hunger-free future.
-
                     </p>
-
                     <div className="hero-buttons">
-
-                        <button className="primary-btn">
-                            🍱 Browse Donations
-                        </button>
-
-                        <button className="secondary-btn">
-                            ❤️ Learn More
-                        </button>
-
+                        <button className="primary-btn">🍱 Browse Donations</button>
+                        <button className="secondary-btn">❤️ Learn More</button>
                     </div>
-
                     <div className="hero-stats">
-
                         <div>
                             <h2>12,540+</h2>
                             <span>Meals Saved</span>
                         </div>
-
                         <div>
                             <h2>326+</h2>
                             <span>Restaurants</span>
                         </div>
-
                         <div>
                             <h2>68+</h2>
                             <span>Partner NGOs</span>
                         </div>
-
                         <div>
                             <h2>95%</h2>
                             <span>Pickup Success</span>
                         </div>
-
                     </div>
-
                 </div>
-
                 <div className="hero-right">
-
                     <div className="hero-slider">
-
                         <img
-
                             src={heroImages[currentImage]}
-
                             alt="Helping People"
-
                             className="slider-image"
-
                         />
                         <div className="slider-dots">
-
-                            {
-
-                                heroImages.map((_, index) => (
-
-                                    <span
-
-                                        key={index}
-
-                                        className={
-
-                                            currentImage === index
-
-                                                ?
-
-                                                "dot active-dot"
-
-                                                :
-
-                                                "dot"
-
-                                        }
-
-                                    />
-
-                                ))
-
-                            }
-
+                            {heroImages.map((_, index) => (
+                                <span
+                                    key={index}
+                                    className={currentImage === index ? "dot active-dot" : "dot"}
+                                />
+                            ))}
                         </div>
-
                     </div>
-
-
                 </div>
-
             </section>
-            {/*====================================
-        DASHBOARD SUMMARY
-=====================================*/}
 
+            {/* DASHBOARD SUMMARY */}
             <section className="summary-section">
-
                 <div className="summary-card">
-
                     <h4>🍱 Available Food</h4>
-
                     <h2>{foodList.length}</h2>
-
                     <span>Live Donations</span>
-
                 </div>
-
                 <div className="summary-card">
-
                     <h4>❤️ Meals Saved</h4>
-
                     <h2>2,450</h2>
-
                     <span>Today</span>
-
                 </div>
-
                 <div className="summary-card">
-
                     <h4>🚚 Active Pickups</h4>
-
                     <h2>18</h2>
-
                     <span>In Progress</span>
-
                 </div>
-
                 <div className="summary-card">
-
                     <h4>🌍 Waste Reduced</h4>
-
                     <h2>380 KG</h2>
-
                     <span>This Month</span>
-
                 </div>
-
             </section>
-            {/*=====================================
-SEARCH & FILTER
-======================================*/}
 
+            {/* SEARCH & FILTER */}
             <section className="search-filter-section">
-
                 <div className="search-box">
-
                     <span>🔍</span>
-
                     <input
                         type="text"
                         placeholder="Search by food, restaurant or location..."
                     />
-
                 </div>
-
                 <div className="filter-buttons">
-
                     <button className="active">All</button>
-
                     <button>🍛 Veg</button>
-
                     <button>🍗 Non-Veg</button>
-
                     <button>🥛 Dairy</button>
-
                     <button>🥖 Bakery</button>
-
                     <button>🍎 Fruits</button>
-
                     <button>⏰ Expiring Soon</button>
-
                 </div>
-
             </section>
 
-            {/* ===========================
-        FILTER BAR
-    ============================ */}
-
+            {/* FILTER BAR */}
             <section className="filter-section">
-
-                <button className="active">
-
-                    All
-
-                </button>
-
-                <button>
-
-                    Veg
-
-                </button>
-
-                <button>
-
-                    Non-Veg
-
-                </button>
-
-                <button>
-
-                    Near Me
-
-                </button>
-
-                <button>
-
-                    Expiring Soon
-
-                </button>
-
+                <button className="active">All</button>
+                <button>Veg</button>
+                <button>Non-Veg</button>
+                <button>Near Me</button>
+                <button>Expiring Soon</button>
             </section>
 
-
-
-            {/* ===========================
-        DONATION GRID START
-=========================== */}
-
+            {/* DONATION GRID */}
             <section className="food-grid">
-
                 {loading ? (
-
                     <div className="loading-container">
                         <div className="loader"></div>
                         <h2>Loading Donations...</h2>
                     </div>
-
                 ) : foodList.length === 0 ? (
-
                     <div className="empty-state">
                         <img
                             src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png"
                             alt="No Food"
                         />
-
                         <h2>No Food Donations Available</h2>
-
                         <p>
                             There are currently no available donations.
                             Please check again later.
                         </p>
                     </div>
-
                 ) : (
-
                     foodList.map((item) => {
-
                         console.log("Donation Item =>", item);
-
                         return (
-
-                            <div
-                                className="food-card"
-                                key={item.id}
-                            >
-
+                            <div className="food-card" key={item.id}>
                                 {/* Food Image */}
                                 <div className="food-image">
-
                                     <img
                                         src={
                                             item.image_url
@@ -488,61 +293,43 @@ SEARCH & FILTER
                                         }
                                         alt={item.food_name}
                                     />
-
-                                    <span className="food-status">
-                                        🟢 Available
-                                    </span>
-
+                                    <span className="food-status">🟢 Available</span>
                                 </div>
 
                                 {/* Food Content */}
                                 <div className="food-content">
-
                                     <h2>{item.food_name}</h2>
-
                                     <p>🏪 {item.restaurant_name}</p>
-
                                     <p>📦 {item.quantity} Servings</p>
-
                                     <p>📍 {item.location}</p>
-
                                     <p className="expiry">
                                         {getTimeRemaining(item.expiry_time)}
                                     </p>
-
                                     <div className="pickup-time">
                                         <span>🚚 Pickup ETA</span>
                                         <span>20-30 min</span>
                                     </div>
-
                                     <button
                                         type="button"
                                         className="claim-btn"
                                         onClick={(e) => {
                                             e.preventDefault();
                                             e.stopPropagation();
-
                                             console.log("🔥 Claim Button Clicked");
                                             console.log("Donation ID :", item.id);
                                             console.log("Donation :", item);
-
                                             handleClaim(item.id);
                                         }}
                                     >
                                         ❤️ Claim Food
                                     </button>
-
                                 </div>
-
                             </div>
-
                         );
-
                     })
-
                 )}
-
             </section>
+
             {/*====================================
         LIVE ANALYTICS
 =====================================*/}
