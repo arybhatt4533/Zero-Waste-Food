@@ -71,62 +71,86 @@ const Login = () => {
         }
 
     };
-
     return (
+        <div className="login-page">
 
-        <div className="login-container">
+            <div className="bg-circle circle1"></div>
+            <div className="bg-circle circle2"></div>
+            <div className="bg-circle circle3"></div>
 
-            <div className="login-card">
+            <div className="login-wrapper">
 
                 {/* LEFT */}
 
                 <div className="login-left">
 
-                    <div className="left-content">
+                    <div className="brand-badge">
+                        🌿 Zero Waste Food
+                    </div>
 
-                        <div className="badge">
-                            🌿 Zero Waste Food
+                    <h1>
+                        Save Food.
+                        <br />
+                        Feed Lives.
+                    </h1>
+
+                    <p>
+                        Join India's smartest food donation platform.
+                        Donate surplus food, reduce waste and help
+                        thousands of families every day.
+                    </p>
+
+                    <div className="feature-grid">
+
+                        <div className="feature-card">
+                            <div className="feature-icon">🍱</div>
+                            <div>
+                                <h3>Fresh Food</h3>
+                                <p>Donate hygienic meals</p>
+                            </div>
                         </div>
 
-                        <h1>
-
-                            Every Meal Saved
-
-                            <br />
-
-                            <span>
-                                Creates A Smile ❤️
-                            </span>
-
-                        </h1>
-
-                        <p>
-
-                            Zero Waste Food connects restaurants,
-                            hotels and generous donors with verified
-                            NGOs to reduce food waste and feed
-                            people in need.
-
-                        </p>
-
-                        <div className="features">
-
-                            <div className="feature">
-                                🍱 Donate Extra Food
+                        <div className="feature-card">
+                            <div className="feature-icon">❤️</div>
+                            <div>
+                                <h3>Help Families</h3>
+                                <p>Spread happiness</p>
                             </div>
+                        </div>
 
-                            <div className="feature">
-                                🏢 Verified NGOs
+                        <div className="feature-card">
+                            <div className="feature-icon">🚚</div>
+                            <div>
+                                <h3>Fast Pickup</h3>
+                                <p>Nearby NGO collection</p>
                             </div>
+                        </div>
 
-                            <div className="feature">
-                                🚚 Fast Pickup
+                        <div className="feature-card">
+                            <div className="feature-icon">🌍</div>
+                            <div>
+                                <h3>Reduce Waste</h3>
+                                <p>Protect our planet</p>
                             </div>
+                        </div>
 
-                            <div className="feature">
-                                📍 Live Donation Tracking
-                            </div>
+                    </div>
 
+                    <div className="left-bottom">
+
+                        <div className="stat">
+                            <h2>12K+</h2>
+                            <span>Meals Saved</span>
+                        </div>
+
+                        <div className="stat">
+                            <h2>500+</h2>
+                            <span>NGOs</span>
+                        </div>
+
+                        <div className="stat">
+                            <h2>98%</h2>
+                            <span>Success</span>
                         </div>
 
                     </div>
@@ -138,7 +162,7 @@ const Login = () => {
                 <div className="login-right">
 
                     <form
-                        className="login-box"
+                        className="login-card"
                         onSubmit={handleLogin}
                     >
 
@@ -146,97 +170,70 @@ const Login = () => {
                             🌿
                         </div>
 
-                        <h2>
-                            Welcome Back
-                        </h2>
+                        <h2>Welcome Back</h2>
 
-                        <p className="login-subtitle">
+                        <p className="subtitle">
                             Login to continue
                         </p>
 
-                        <select
-                            className="input-box"
-                            value={role}
-                            onChange={(e) =>
-                                setRole(e.target.value)
-                            }
-                        >
+                        <div className="input-group">
 
-                            <option value="donor">
-                                👤 Donor
-                            </option>
+                            <label>Login As</label>
 
-                            <option value="ngo">
-                                🏢 NGO
-                            </option>
-
-                        </select>
-
-                        <input
-
-                            className="input-box"
-
-                            type="email"
-
-                            placeholder="Email Address"
-
-                            value={email}
-
-                            onChange={(e) =>
-                                setEmail(e.target.value)
-                            }
-
-                            required
-
-                        />
-
-                        <div className="password-box">
-
-                            <input
-
-                                className="input-box"
-
-                                type={
-                                    showPassword
-                                        ? "text"
-                                        : "password"
-                                }
-
-                                placeholder="Password"
-
-                                value={password}
-
-                                onChange={(e) =>
-                                    setPassword(
-                                        e.target.value
-                                    )
-                                }
-
-                                required
-
-                            />
-
-                            <button
-
-                                type="button"
-
-                                className="show-btn"
-
-                                onClick={() =>
-                                    setShowPassword(
-                                        !showPassword
-                                    )
-                                }
-
+                            <select
+                                value={role}
+                                onChange={(e) => setRole(e.target.value)}
                             >
 
-                                {
-                                    showPassword
-                                        ? "🙈"
-                                        : "👁"
-                                }
+                                <option value="donor">
+                                    👤 Donor
+                                </option>
 
-                            </button>
+                                <option value="ngo">
+                                    🏢 NGO
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <div className="input-group">
+
+                            <label>Email Address</label>
+
+                            <input
+                                type="email"
+                                placeholder="Enter your email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+
+                        </div>
+
+                        <div className="input-group">
+
+                            <label>Password</label>
+
+                            <div className="password-wrapper">
+
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    placeholder="Enter password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                />
+
+                                <button
+                                    type="button"
+                                    className="eye-btn"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                >
+                                    {showPassword ? "🙈" : "👁"}
+                                </button>
+
+                            </div>
 
                         </div>
 
@@ -245,17 +242,9 @@ const Login = () => {
                             <label>
 
                                 <input
-
                                     type="checkbox"
-
                                     checked={remember}
-
-                                    onChange={(e) =>
-                                        setRemember(
-                                            e.target.checked
-                                        )
-                                    }
-
+                                    onChange={(e) => setRemember(e.target.checked)}
                                 />
 
                                 Remember Me
@@ -269,57 +258,34 @@ const Login = () => {
                         </div>
 
                         <button
-
-                            className="submit-btn"
-
+                            className="login-btn"
                             type="submit"
-
                         >
-
                             🚀 Login
-
                         </button>
 
                         <button
-
                             type="button"
-
                             className="admin-btn"
-
-                            onClick={() =>
-                                navigate("/admin-login")
-                            }
-
+                            onClick={() => navigate("/admin-login")}
                         >
-
                             🔐 Admin Portal
-
                         </button>
 
-                        <p className="footer-text">
+                        <div className="register">
 
                             Don't have an account?
 
                             <span
-                                onClick={() =>
-                                    navigate("/signup")
-                                }
+                                onClick={() => navigate("/signup")}
                             >
-
                                 Register Here
-
                             </span>
 
-                        </p>
+                        </div>
 
                         <div className="copyright">
-
                             © 2026 Zero Waste Food
-
-                            <br />
-
-                            Saving Food • Saving Lives ❤️
-
                         </div>
 
                     </form>
@@ -329,7 +295,6 @@ const Login = () => {
             </div>
 
         </div>
-
     );
 
 };

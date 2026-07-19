@@ -1,6 +1,4 @@
-console.log("PATCH /claim hit");
-console.log("Params:", req.params);
-console.log("Body:", req.body);
+
 
 const express = require("express");
 const router = express.Router();

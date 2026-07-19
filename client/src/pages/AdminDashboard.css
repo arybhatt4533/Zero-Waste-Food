@@ -43,17 +43,18 @@
 }
 
 /* ==========================================================================
-   💎 1. TOP NAVBAR (Sleek Dark Matte)
+   💎 1. TOP NAVBAR (Ultra-Premium Dark Control Center)
    ========================================================================== */
 .admin-navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(18, 18, 22, 0.8);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    padding: 16px 40px;
-    border-bottom: 1px solid var(--dark-border);
+    background: rgba(15, 15, 18, 0.85); /* लॉगिन पेज का कोर डार्क शेड */
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    padding: 14px 40px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* क्रिस्प माइक्रो-बॉर्डर */
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -63,12 +64,13 @@
     font-size: 1.25rem;
     font-weight: 800;
     letter-spacing: -0.6px;
-    color: var(--text-primary);
+    color: #FFFFFF;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
 }
 
+/* लाइव नियॉन इंडिकेटर */
 .admin-navbar h2::before {
     content: "";
     width: 8px;
@@ -76,7 +78,8 @@
     background: var(--zomato-red);
     border-radius: 50%;
     display: inline-block;
-    box-shadow: 0 0 12px var(--zomato-red), 0 0 20px var(--zomato-red);
+    box-shadow: 0 0 12px var(--zomato-red), 0 0 25px var(--zomato-red);
+    animation: pulseGlow 2s infinite alternate;
 }
 
 .admin-user {
@@ -85,75 +88,104 @@
     gap: 16px;
 }
 
+/* Super Admin Badge - आपके लॉगिन पोर्टल के बटन जैसा ग्लो */
 .admin-user span {
-    font-weight: 700;
-    color: var(--zomato-red);
-    font-size: 0.75rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 0.8px;
-    background: rgba(226, 55, 68, 0.1);
+    background: var(--zomato-red);
     padding: 6px 14px;
     border-radius: 4px;
-    border: 1px solid rgba(226, 55, 68, 0.25);
-    box-shadow: 0 0 10px rgba(226, 55, 68, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 15px rgba(226, 55, 68, 0.45);
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
-/* Navbar Logout Button */
+/* Logout Button - Sharp Matte Finish */
 .admin-user button {
-    background: #1C1C24;
-    color: #FFFFFF;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #16161C;
+    color: #E5E5EA;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     padding: 8px 18px;
     border-radius: 4px;
     cursor: pointer;
     font-weight: 700;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    transition: all 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05);
 }
 
 .admin-user button:hover {
-    background: var(--zomato-red);
+    background: #FFFFFF;
+    color: #000000;
     border-color: transparent;
-    box-shadow: 0 0 15px var(--zomato-red);
+    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.25);
     transform: translateY(-1px);
 }
 
+/* सटल पल्स एनीमेशन लाइव डॉट के लिए */
+@keyframes pulseGlow {
+    0% { transform: scale(0.9); opacity: 0.8; }
+    100% { transform: scale(1.1); opacity: 1; }
+}
+
 /* ==========================================================================
-   🏎️ 2. HORIZONTAL MENU (Premium Dark Ribbon)
+   🏎️ 2. HORIZONTAL MENU (Ultra-Sleek Cyber Command Ribbon)
    ========================================================================== */
 .admin-menu {
     display: flex;
-    gap: 6px;
-    background: var(--bg-menu-dark);
-    padding: 10px 40px;
-    border-bottom: 1px solid var(--dark-border);
+    gap: 8px;
+    background: #121216; /* लॉगिन पेज का कोर डार्क शेड */
+    padding: 12px 40px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: inset 0 -10px 20px rgba(0, 0, 0, 0.2);
+    overflow-x: auto;
+}
+
+/* स्क्रॉल बार को छुपाने के लिए ताकि लुक एकदम क्लीन रहे */
+.admin-menu::-webkit-scrollbar {
+    display: none;
 }
 
 .admin-menu button {
-    background: transparent;
-    color: var(--text-secondary);
-    border: none;
-    padding: 10px 20px;
-    font-size: 0.85rem;
+    background: rgba(255, 255, 255, 0.02);
+    color: #9A9A9E;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    padding: 10px 22px;
+    font-size: 0.82rem;
     font-weight: 700;
     cursor: pointer;
-    border-radius: 4px;
-    transition: all 0.2s ease;
+    border-radius: 4px; /* शार्प लुक */
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
+/* होवर करने पर - सटल वाइट माइक्रो-ग्लो */
 .admin-menu button:hover {
     color: #FFFFFF;
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
 }
 
+/* एक्टिव स्टेट - लॉगिन पेज के "Secure Admin Portal" जैसा धांसू लुक */
 .admin-menu button.active {
     color: #FFFFFF;
     background: var(--zomato-red);
-    box-shadow: 0 4px 15px rgba(226, 55, 68, 0.4);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 20px rgba(226, 55, 68, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transform: translateY(0);
 }
-
 /* ==========================================================================
    ⚡ 3. GLOWING METRIC CARDS (Matches Login Card Style)
    ========================================================================== */
