@@ -43,7 +43,7 @@ const NgoDashboard = () => {
                 if (storedUser) {
                     const parsedUser = JSON.parse(storedUser);
 
-                    ngo_id = parsedUser.id;  
+                    ngo_id = parsedUser.id;
                 }
             }
 
@@ -230,34 +230,78 @@ const NgoDashboard = () => {
                 </div>
             </section>
 
-            {/* SEARCH & FILTER */}
-            <section className="search-filter-section">
-                <div className="search-box">
-                    <span>🔍</span>
-                    <input
-                        type="text"
-                        placeholder="Search by food, restaurant or location..."
-                    />
+            {/* ================= SEARCH + FILTER ================= */}
+
+            <section className="filter-section">
+
+                <div className="filter-top">
+
+                    <div className="filter-title">
+
+                        <span className="filter-badge">
+                            🔍 Browse Donations
+                        </span>
+
+                        <h2>
+                            Find Fresh Food Nearby
+                        </h2>
+
+                        <p>
+                            Browse available donations by category and pickup urgency.
+                        </p>
+
+                    </div>
+
+                    <div className="search-box">
+
+                        <span className="search-icon">
+                            🔍
+                        </span>
+
+                        <input
+                            type="text"
+                            placeholder="Search food, restaurant, location..."
+                        />
+
+                    </div>
+
                 </div>
+
                 <div className="filter-buttons">
-                    <button className="active">All</button>
-                    <button>🍛 Veg</button>
-                    <button>🍗 Non-Veg</button>
-                    <button>🥛 Dairy</button>
-                    <button>🥖 Bakery</button>
-                    <button>🍎 Fruits</button>
-                    <button>⏰ Expiring Soon</button>
+
+                    <button className="active">
+                        🌍 All
+                    </button>
+
+                    <button>
+                        🥗 Veg
+                    </button>
+
+                    <button>
+                        🍗 Non-Veg
+                    </button>
+
+                    <button>
+                        🥛 Dairy
+                    </button>
+
+                    <button>
+                        🥖 Bakery
+                    </button>
+
+                    <button>
+                        🍎 Fruits
+                    </button>
+
+                    <button>
+                        ⏰ Expiring Soon
+                    </button>
+
                 </div>
+
             </section>
 
-            {/* FILTER BAR */}
-            <section className="filter-section">
-                <button className="active">All</button>
-                <button>Veg</button>
-                <button>Non-Veg</button>
-                <button>Near Me</button>
-                <button>Expiring Soon</button>
-            </section>
+
 
             {/* DONATION GRID */}
             <section className="food-grid">

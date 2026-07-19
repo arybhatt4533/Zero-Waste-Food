@@ -1,15 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+
+/* NgoDashboard.css */
+
+.ngo-dashboard {
+    background: linear-gradient(135deg, #e4cfcc, #dde89d, #ebe6a4);
+    color: #96afd7;
+    /* Dark slate text contrast ke liye */
+    min-height: 100vh;
+    padding-bottom: 40px;
 }
 
+/* Agar pure body ka background black ho rha hai, toh ise bhi check kar lo */
 body {
-    overflow-x: hidden;
-    background: #111;
+    background-color: #f8fafc;
 }
 
 /* =========================
@@ -18,11 +22,11 @@ MAIN PAGE LAYOUT
 .ngo-profile-page {
     min-height: 100vh;
     padding: 50px 10%;
-    background: 
+    background:
         radial-gradient(circle at top left, #ff4d5a22, transparent 40%),
         radial-gradient(circle at bottom right, #ff6b0018, transparent 40%),
         linear-gradient(135deg, #121212, #111, #080808);
-    color: #fff;
+    color: #c6c388;
     display: flex;
     flex-direction: column;
     gap: 40px;
@@ -65,12 +69,17 @@ HERO SECTION
 }
 
 @keyframes shine {
-    0% { background-position: 0%; }
-    100% { background-position: 400%; }
+    0% {
+        background-position: 0%;
+    }
+
+    100% {
+        background-position: 400%;
+    }
 }
 
 .profile-hero p {
-    color: #bbb;
+    color: #c3bf9a;
     font-size: 18px;
 }
 
@@ -169,14 +178,16 @@ STATS GRID
 /* =========================
 CURRENT ORDERS
 ========================= */
-.current-orders h2, .history-header h2, .timeline h2 {
+.current-orders h2,
+.history-header h2,
+.timeline h2 {
     font-size: 26px;
     font-weight: 700;
     margin-bottom: 25px;
     display: flex;
     align-items: center;
     gap: 12px;
-    color: #fff;
+    color: #c7bc98;
 }
 
 .current-orders {
@@ -223,7 +234,8 @@ CURRENT ORDERS
     border: 1px solid rgba(226, 55, 68, 0.3);
 }
 
-.order-card button, .history-card button {
+.order-card button,
+.history-card button {
     padding: 12px 24px;
     border: none;
     border-radius: 12px;
@@ -234,7 +246,8 @@ CURRENT ORDERS
     transition: 0.3s ease;
 }
 
-.order-card button:hover, .history-card button:hover {
+.order-card button:hover,
+.history-card button:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(226, 55, 68, 0.4);
 }
@@ -378,7 +391,7 @@ TIMELINE
 }
 
 /* Connect active state glow to the line (optional customization) */
-.step.active + .line {
+.step.active+.line {
     background: #e23744;
 }
 
@@ -391,7 +404,7 @@ RESPONSIVE DESIGN
         gap: 15px;
         text-align: center;
     }
-    
+
     .order-card b {
         margin: 5px auto;
         display: inline-block;
@@ -448,4 +461,179 @@ RESPONSIVE DESIGN
     .status-box button {
         width: 100%;
     }
+}
+/*==================================================
+                DONATION GRID
+==================================================*/
+
+.donation-grid{
+
+    width:95%;
+    max-width:1450px;
+
+    margin:45px auto 70px;
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
+
+    gap:32px;
+
+}
+
+/*========================*/
+
+.food-card{
+
+    background:#fff;
+
+    border-radius:26px;
+
+    overflow:hidden;
+
+    position:relative;
+
+    transition:.35s;
+
+    box-shadow:
+    0 15px 40px rgba(0,0,0,.06);
+
+}
+
+.food-card:hover{
+
+    transform:translateY(-10px);
+
+    box-shadow:
+    0 30px 70px rgba(245,158,11,.18);
+
+}
+
+/*========================*/
+
+.food-image{
+
+    position:relative;
+
+    overflow:hidden;
+
+    height:260px;
+
+}
+
+.food-image img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    transition:.6s;
+
+}
+
+.food-card:hover .food-image img{
+
+    transform:scale(1.08);
+
+}
+
+/*========================*/
+
+.food-image::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:linear-gradient(
+
+        to top,
+
+        rgba(0,0,0,.35),
+
+        transparent 60%
+
+    );
+
+}
+
+/*========================*/
+
+.food-status{
+
+    position:absolute;
+
+    top:18px;
+
+    right:18px;
+
+    z-index:5;
+
+    background:#22c55e;
+
+    color:#fff;
+
+    padding:8px 18px;
+
+    border-radius:50px;
+
+    font-size:13px;
+
+    font-weight:700;
+
+    box-shadow:
+    0 12px 25px rgba(34,197,94,.28);
+
+}
+
+/*========================*/
+
+.food-content{
+
+    padding:28px;
+
+}
+
+.food-content h2{
+
+    font-size:27px;
+
+    color:#222;
+
+    margin-bottom:20px;
+
+    font-weight:700;
+
+}
+
+/*========================*/
+
+.food-details{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+    margin-bottom:22px;
+
+}
+
+.food-details span{
+
+    color:#666;
+
+    font-size:15px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
 }
