@@ -100,11 +100,11 @@ const NgoDashboard = () => {
        HERO IMAGE SLIDER
     =========================== */
     const heroImages = [
-        "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1200",
-        "https://images.unsplash.com/photo-1469571486292-b53601020f35?w=1200",
-        "https://images.unsplash.com/photo-1593113598332-cd59a93f7d7e?w=1200",
-        "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=1200",
-        "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1200"
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJ-tcBIqlprqBM-gbeWl1xoYhuXxkAGjvilEJdH_TKkA&s=10",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4vIUNwi6NrAVZb3SBVPEGgQWeM2qHxaPhvlB-RwaCqg&s=10",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUaTKqWqSTWpYoxpWIettlld0fMDhIBT-moDN1m37Lbw&s=10",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQumW38FoH-Lt12p_yybQndY1Gpm0D8lZiclravlKLpsg&s=10",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6MrpUzZmYUlj7AVMh9tbVJVcqdk8ygvwRl-viRI6PfcipiqG-RH4wlkP0&s=10"
     ];
 
     const [currentImage, setCurrentImage] = useState(0);
