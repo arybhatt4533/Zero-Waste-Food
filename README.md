@@ -36,9 +36,9 @@ Frontend: React.js
 
 Backend: Node.js, Express.js
 
-Database: MongoDB
+Database: PostreeSQL
 
-Built with ❤️ by Aryabhatt
+Built with  by Aryabhatt
 
 
 
