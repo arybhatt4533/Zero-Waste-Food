@@ -7,91 +7,156 @@ const Signup = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('donor'); // 'donor' या 'ngo'
+    const [role, setRole] = useState('donor');
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
     const handleSignup = async (e) => {
         e.preventDefault();
         try {
-            // ध्यान दें: हमने सर्वर पर '/register' वाला रूट बनाया है
             await axios.post('https://zero-waste-food-b.onrender.com/auth/register', { name, email, password, role });
             alert("Signup Successful! Now please login.");
-            navigate('/'); // लॉगिन पेज पर भेजें
+            navigate('/');
         } catch (err) {
             alert("Signup failed. User might already exist.");
         }
     };
+
     return (
-        <div className="signup-container">
+        <div className="login-page">
+            {/* Background Blobs for V2 Theme */}
+            <div className="bg-circle circle1"></div>
+            <div className="bg-circle circle2"></div>
+            <div className="bg-circle circle3"></div>
 
-            <div className="signup-card">
+            <div className="login-wrapper">
 
-                <div className="signup-left">
+                {/* LEFT SECTION (Branding & Impact) */}
+                <div className="login-left">
+                    <div>
+                        <div className="brand-badge">
+                            🌱 Zero Waste Food
+                        </div>
+                        <h1>Join Us in <span>Saving Food</span> & Feeding Lives</h1>
+                        <p>
+                            Create your account and start saving food. Your one donation can help feed many people in need. Join us in our mission to reduce food waste.
+                        </p>
+                    </div>
 
-                    <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ11CAWx84xynMtOi83_G4rsE6hA_insxLk_ZR1YTKBqQ&s=10"
-                        className="signup-image"
-                        alt="food"
-                    />
+                    <div className="feature-grid">
+                        <div className="feature-card">
+                            <div className="feature-icon">🍲</div>
+                            <div>
+                                <h3>Donate Extra Food</h3>
+                                <p>Connect directly with local NGOs and community kitchens.</p>
+                            </div>
+                        </div>
+                        <div className="feature-card">
+                            <div className="feature-icon">🤝</div>
+                            <div>
+                                <h3>Make Real Impact</h3>
+                                <p>Track how many meals you've saved and shared.</p>
+                            </div>
+                        </div>
+                    </div>
 
-                    <h1>Zero Waste Food</h1>
-
-                    <p>
-                        Create your account and start saving food. Your one donation can help feed many people in need. Join us in our mission to reduce food waste and make a difference in the world.
-                    </p>
-
+                    <div className="left-bottom">
+                        <div className="stat">
+                            <h2>10K+</h2>
+                            <span>Meals Saved</span>
+                        </div>
+                        <div className="stat">
+                            <h2>500+</h2>
+                            <span>Active Donors</span>
+                        </div>
+                    </div>
                 </div>
 
-                <div className="signup-right">
+                {/* RIGHT SECTION (Signup Form) */}
+                <div className="login-right" style={{ padding: '45px', display: 'flex', alignItems: 'center' }}>
+                    <div className="login-card">
+                        <div className="login-logo">
+                            🍱
+                        </div>
+                        <h2>Create Account</h2>
+                        <p className="subtitle">Fill in your details to get started</p>
 
-                    <form className="signup-box" onSubmit={handleSignup}>
+                        <form onSubmit={handleSignup}>
 
-                        <h2>Sign Up</h2>
+                            {/* Full Name */}
+                            <div className="input-group">
+                                <label>Full Name</label>
+                                <input
+                                    type="text"
+                                    placeholder="Enter your name"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    required
+                                />
+                            </div>
 
-                        <input
-                            type="text"
-                            placeholder="Name"
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                        />
+                            {/* Email Address */}
+                            <div className="input-group">
+                                <label>Email Address</label>
+                                <input
+                                    type="email"
+                                    placeholder="Enter your email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                />
+                            </div>
 
-                        <input
-                            type="email"
-                            placeholder="Email"
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
+                            {/* Password */}
+                            <div className="input-group">
+                                <label>Password</label>
+                                <div className="password-wrapper">
+                                    <input
+                                        type={showPassword ? "text" : "password"}
+                                        placeholder="Create password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        required
+                                    />
+                                    <button
+                                        type="button"
+                                        className="eye-btn"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                    >
+                                        {showPassword ? "👁️" : "🙈"}
+                                    </button>
+                                </div>
+                            </div>
 
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
+                            {/* Role Select */}
+                            <div className="input-group">
+                                <label>Register As</label>
+                                <select value={role} onChange={(e) => setRole(e.target.value)}>
+                                    <option value="donor">Donor (Restaurant/Individual)</option>
+                                    <option value="ngo">NGO / Charitable Trust</option>
+                                </select>
+                            </div>
 
-                        <select onChange={(e) => setRole(e.target.value)}>
+                            {/* Submit Button */}
+                            <button type="submit" className="login-btn" style={{ marginTop: '10px' }}>
+                                Register
+                            </button>
 
-                            <option value="donor">Donor</option>
+                            {/* Already Have Account */}
+                            <div className="register">
+                                Already have an account?{" "}
+                                <span onClick={() => navigate('/')}>Login here</span>
+                            </div>
 
-                            <option value="ngo">NGO</option>
+                            <p className="copyright">
+                                © 2026 Zero Waste Food. Together against food wastage.
+                            </p>
 
-                        </select>
-
-                        <button type="submit">
-                            Register
-                        </button>
-
-                        <p>
-                            Already have an account?
-                            <a href="/"> Login here</a>
-                        </p>
-
-                    </form>
-
+                        </form>
+                    </div>
                 </div>
 
             </div>
-
         </div>
     );
 };
