@@ -8,7 +8,7 @@ const pool = require("./db");
 
 const authRoutes = require("./routes/auth");
 const donationRoutes = require("./routes/donations");
-const ngoRoutes = require("./routes/ngo");
+const ngoRoutes = require("./routes/Ngo");
 const adminRoutes = require("./routes/adminRoutes");
 
 const app = express();
@@ -55,7 +55,7 @@ app.get("/test-db", async (req, res) => {
 // ======================
 app.use("/auth", authRoutes);
 app.use("/donations", donationRoutes);
-app.use("/ngo", ngoRoutes);
+app.use("/Ngo", ngoRoutes);
 app.use("/admin", adminRoutes);
 
 // ======================
