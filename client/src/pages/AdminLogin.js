@@ -17,7 +17,7 @@ const AdminLogin = () => {
         try {
 
             const res = await axios.post(
-                "http://localhost:5000/admin/login",
+                "https://zero-waste-food-b.onrender.com/admin/login",
                 {
                     email,
                     password

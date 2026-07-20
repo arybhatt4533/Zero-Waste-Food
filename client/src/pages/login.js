@@ -20,7 +20,7 @@ const Login = () => {
         try {
 
             const res = await axios.post(
-                "http://localhost:5000/auth/login",
+                "https://zero-waste-food-b.onrender.com/auth/login",
                 {
                     email,
                     password,

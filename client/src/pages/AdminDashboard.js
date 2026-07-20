@@ -40,7 +40,7 @@ const AdminDashboard = () => {
     const fetchDashboard = useCallback(async () => {
         setLoading(true); // ✅ रिक्वेस्ट शुरू होने पर लोडिंग ऑन करें
         try {
-            const res = await axios.get("http://localhost:5000/admin/dashboard", getAuthConfig());
+            const res = await axios.get("https://zero-waste-food-b.onrender.com/admin/dashboard", getAuthConfig());
             console.log("Admin Dashboard Data =>", res.data);
 
             if (res.data) {
@@ -79,7 +79,7 @@ const AdminDashboard = () => {
     const deleteUser = async (id) => {
         if (!window.confirm("Delete this user?")) return;
         try {
-            await axios.delete(`http://localhost:5000/admin/users/${id}`, getAuthConfig());
+            await axios.delete(`https://zero-waste-food-b.onrender.com/admin/users/${id}`, getAuthConfig());
             alert("User Deleted Successfully");
             fetchDashboard();
         } catch (err) {
@@ -93,7 +93,7 @@ const AdminDashboard = () => {
     // ============================
     const approveNgo = async (id) => {
         try {
-            await axios.put(`http://localhost:5000/admin/ngos/${id}/approve`, {}, getAuthConfig());
+            await axios.put(`https://zero-waste-food-b.onrender.com/admin/ngos/${id}/approve`, {}, getAuthConfig());
             alert("NGO Approved");
             fetchDashboard();
         } catch (err) {
@@ -108,7 +108,7 @@ const AdminDashboard = () => {
     const rejectNgo = async (id) => {
         if (!window.confirm("Reject this NGO?")) return;
         try {
-            await axios.put(`http://localhost:5000/admin/ngos/${id}/reject`, {}, getAuthConfig());
+            await axios.put(`https://zero-waste-food-b.onrender.com/admin/ngos/${id}/reject`, {}, getAuthConfig());
             alert("NGO Rejected");
             fetchDashboard();
         } catch (err) {
@@ -123,7 +123,7 @@ const AdminDashboard = () => {
     const deleteDonation = async (id) => {
         if (!window.confirm("Delete this donation?")) return;
         try {
-            await axios.delete(`http://localhost:5000/admin/donations/${id}`, getAuthConfig());
+            await axios.delete(`https://zero-waste-food-b.onrender.com/admin/donations/${id}`, getAuthConfig());
             alert("Donation Deleted");
             fetchDashboard();
         } catch (err) {
@@ -137,7 +137,7 @@ const AdminDashboard = () => {
     // ============================
     const completeDonation = async (id) => {
         try {
-            await axios.put(`http://localhost:5000/admin/donations/${id}/complete`, {}, getAuthConfig());
+            await axios.put(`https://zero-waste-food-b.onrender.com/admin/donations/${id}/complete`, {}, getAuthConfig());
             alert("Donation Completed");
             fetchDashboard();
         } catch (err) {

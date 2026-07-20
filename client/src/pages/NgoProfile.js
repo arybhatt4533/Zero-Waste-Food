@@ -19,7 +19,7 @@ const NgoProfile = () => {
             const user = JSON.parse(localStorage.getItem("user"));
 
             const res = await axios.get(
-                `http://localhost:5000/ngo/profile/${user.id}`
+                `https://zero-waste-food-b.onrender.com/ngo/profile/${user.id}`
             );
 
             console.log(res.data);

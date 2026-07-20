@@ -552,7 +552,7 @@ color:#666;
     display:block;
     margin-bottom:9px;
     font-weight:900;
-    color:#090909;
+    color:#0e0e0e;
     font-size:16px;
 }
 
@@ -565,13 +565,13 @@ color:#666;
     background:#fffdf9;
     padding:0 18px;
     font-size:15px;
-    color:#2b2218;
+    color:#060606;
     transition:.35s;
     outline:none;
 }
 
 .input-group input::placeholder{
-    color:#9b8977;
+    color:#151515;
 }
 
 .input-group input:focus,
@@ -631,7 +631,7 @@ color:#666;
 }
 
 .login-options input{
-    accent-color:#ff9d00;
+    accent-color:#0a0a0a;
 }
 
 .login-options a{

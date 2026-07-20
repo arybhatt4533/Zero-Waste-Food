@@ -91,7 +91,7 @@ const Donation = () => {
             }
 
             const response = await axios.post(
-                "http://localhost:5000/donations",
+                "https://zero-waste-food-b.onrender.com/donations",
                 data,
                 {
                     headers: {

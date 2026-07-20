@@ -13,7 +13,7 @@ const NgoDashboard = () => {
     const fetchDonations = async () => {
         setLoading(true);
         try {
-            const res = await axios.get('http://localhost:5000/donations');
+            const res = await axios.get('https://zero-waste-food-b.onrender.com/donations');
             // सिर्फ वो दिखाएं जिनका स्टेटस 'claimed' नहीं है
             setFoodList(res.data.filter(item => item.status !== 'claimed'));
             console.log('[NGO_DASHBOARD] ✅ Donations fetched:', res.data);
@@ -62,7 +62,7 @@ const NgoDashboard = () => {
 
         try {
             const response = await axios.patch(
-                `http://localhost:5000/donations/claim/${id}`,
+                `https://zero-waste-food-b.onrender.com/donations/claim/${id}`,
                 { ngo_id }
             );
 
@@ -332,7 +332,7 @@ const NgoDashboard = () => {
                                     <img
                                         src={
                                             item.image_url
-                                                ? `http://localhost:5000${item.image_url}`
+                                                ? `https://zero-waste-food-b.onrender.com${item.image_url}`
                                                 : "https://images.unsplash.com/photo-1547592180-85f173990554?w=800"
                                         }
                                         alt={item.food_name}

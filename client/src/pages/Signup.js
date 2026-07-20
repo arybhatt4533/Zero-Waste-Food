@@ -14,7 +14,7 @@ const Signup = () => {
         e.preventDefault();
         try {
             // ध्यान दें: हमने सर्वर पर '/register' वाला रूट बनाया है
-            await axios.post('http://localhost:5000/auth/register', { name, email, password, role });
+            await axios.post('https://zero-waste-food-b.onrender.com/auth/register', { name, email, password, role });
             alert("Signup Successful! Now please login.");
             navigate('/'); // लॉगिन पेज पर भेजें
         } catch (err) {
