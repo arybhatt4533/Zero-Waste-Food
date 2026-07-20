@@ -100,39 +100,26 @@ router.post("/login", async (req, res) => {
 });
 
 // ==========================================
-// 2. GET /admin/dashboard (100% डायरेक्ट डेटाबेस सिंक)
+// 2. GET /admin/dashboard (Fixed NGO Query)
 // ==========================================
 router.get("/dashboard", verifyToken, isAdmin, async (req, res) => {
     try {
         console.log("👉 Fetching REAL Admin Dashboard Data...");
 
-        // 1. Users Count (Admins को छोड़कर)
+        // 1. Users Count (Admins ko chhod kar)
         const usersCount = await pool.query(
-            "SELECT COUNT(*) FROM users WHERE role != 'admin' AND role != 'Admin'"
+            "SELECT COUNT(*) FROM users WHERE LOWER(role) != 'admin'"
         );
 
-        // 2. NGOs Count (अगर ngos टेबल खाली या इनएक्टिव है, तो users टेबल में जिनका रोल NGO है उन्हें गिनेंगे)
-        let ngosCountVal = 0;
-        let allNGOsRows = [];
-        try {
-            const ngosCount = await pool.query("SELECT COUNT(*) FROM ngos");
-            ngosCountVal = parseInt(ngosCount.rows[0].count) || 0;
+        // 2. Direct Users Table se NGOs fetch karo (Taaki Empty Table Fallback issue na aaye)
+        const allNGOsFromUsers = await pool.query(
+            "SELECT user_id as id, name, email, status FROM users WHERE LOWER(role) = 'ngo' ORDER BY user_id DESC"
+        );
+        
+        let allNGOsRows = allNGOsFromUsers.rows;
+        let ngosCountVal = allNGOsFromUsers.rows.length;
 
-            const allNGOs = await pool.query("SELECT id, name, email, status FROM ngos ORDER BY id DESC");
-            allNGOsRows = allNGOs.rows;
-        } catch (ngoErr) {
-            console.log("⚠️ NGOs table inactive, checking NGOs in Users table instead...");
-            // Fallback: users टेबल से NGO काउंट करना
-            const ngosFromUsers = await pool.query("SELECT COUNT(*) FROM users WHERE role = 'ngo' OR role = 'NGO'");
-            ngosCountVal = parseInt(ngosFromUsers.rows[0].count) || 0;
-
-            const allNGOsFromUsers = await pool.query(
-                "SELECT user_id as id, name, email, status FROM users WHERE role = 'ngo' OR role = 'NGO' ORDER BY user_id DESC"
-            );
-            allNGOsRows = allNGOsFromUsers.rows;
-        }
-
-        // 3. Donations Count
+        // 3. Donations Data
         let donationsCountVal = 0;
         let claimedCountVal = 0;
         let recentDonationsRows = [];
@@ -142,26 +129,21 @@ router.get("/dashboard", verifyToken, isAdmin, async (req, res) => {
             const totalDonations = await pool.query("SELECT COUNT(*) FROM donations");
             donationsCountVal = parseInt(totalDonations.rows[0].count) || 0;
 
-            // 'Completed', 'claimed' या 'claimed_at' NOT NULL वाले डोनेशन्स
             const claimedDonations = await pool.query(
-                "SELECT COUNT(*) FROM donations WHERE status = 'Completed' OR status = 'claimed' OR claimed_at IS NOT NULL"
+                "SELECT COUNT(*) FROM donations WHERE LOWER(status) = 'completed' OR LOWER(status) = 'claimed' OR claimed_at IS NOT NULL"
             );
             claimedCountVal = parseInt(claimedDonations.rows[0].count) || 0;
 
-            // Recent Donations Query (donations टेबल के स्कीमा के अनुसार u.user_id = d.user_id किया गया है)
             const recentDonations = await pool.query(`
-                SELECT d.id, d.food_name, d.status, 
-                       u.name as restaurant_name 
+                SELECT d.id, d.food_name, d.status, u.name as restaurant_name 
                 FROM donations d
                 LEFT JOIN users u ON d.user_id = u.user_id
                 ORDER BY d.id DESC LIMIT 5
             `);
             recentDonationsRows = recentDonations.rows;
 
-            // All Donations Query
             const allDonations = await pool.query(`
-                SELECT d.id, d.food_name, d.status, 
-                       u.name as restaurant_name 
+                SELECT d.id, d.food_name, d.status, u.name as restaurant_name 
                 FROM donations d
                 LEFT JOIN users u ON d.user_id = u.user_id
                 ORDER BY d.id DESC
@@ -174,7 +156,7 @@ router.get("/dashboard", verifyToken, isAdmin, async (req, res) => {
 
         // 4. All Users (Except Admin)
         const allUsers = await pool.query(
-            "SELECT user_id as id, name, email, role FROM users WHERE role != 'admin' AND role != 'Admin' ORDER BY user_id DESC"
+            "SELECT user_id as id, name, email, role, status FROM users WHERE LOWER(role) != 'admin' ORDER BY user_id DESC"
         );
 
         res.status(200).json({
