@@ -38,7 +38,7 @@ Backend: Node.js, Express.js
 
 Database: PostreeSQL
 
-Built with  by Aryabhatt
+Built by Aryabhatt
 
 
 
