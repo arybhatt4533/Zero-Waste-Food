@@ -3,8 +3,75 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
-const Login = () => {
+// const Login = () => {
 
+//     const navigate = useNavigate();
+
+//     const [email, setEmail] = useState("");
+//     const [password, setPassword] = useState("");
+//     const [role, setRole] = useState("donor");
+//     const [showPassword, setShowPassword] = useState(false);
+//     const [remember, setRemember] = useState(false);
+
+//     const handleLogin = async (e) => {
+
+//         e.preventDefault();
+
+//         try {
+
+//             const res = await axios.post(
+//                 "https://zero-waste-food-b.onrender.com/auth/login",
+//                 {
+//                     email,
+//                     password,
+//                     role
+//                 }
+//             );
+
+//             localStorage.setItem("token", res.data.token);
+
+//             localStorage.setItem(
+//                 "user",
+//                 JSON.stringify(res.data.user)
+//             );
+
+//             localStorage.setItem(
+//                 "role",
+//                 res.data.user.role
+//             );
+
+//             localStorage.setItem(
+//                 "user_id",
+//                 res.data.user.id
+//             );
+
+//             if (remember) {
+//                 localStorage.setItem("rememberEmail", email);
+//             }
+
+//             alert("✅ Login Successful");
+
+//             if (res.data.user.role === "ngo") {
+//                 navigate("/ngo-dashboard");
+//             } else {
+//                 navigate("/donate");
+//             }
+
+//         }
+
+//         catch (err) {
+
+//             console.log(err);
+
+//             alert(
+//                 err.response?.data?.message ||
+//                 "Invalid Credentials"
+//             );
+
+//         }
+
+//     };
+const Login = () => {
     const navigate = useNavigate();
 
     const [email, setEmail] = useState("");
@@ -12,13 +79,13 @@ const Login = () => {
     const [role, setRole] = useState("donor");
     const [showPassword, setShowPassword] = useState(false);
     const [remember, setRemember] = useState(false);
+    const [errorMsg, setErrorMsg] = useState(""); // एरर दिखाने के लिए स्टेट
 
     const handleLogin = async (e) => {
-
         e.preventDefault();
+        setErrorMsg(""); // पुराना एरर साफ करें
 
         try {
-
             const res = await axios.post(
                 "https://zero-waste-food-b.onrender.com/auth/login",
                 {
@@ -29,27 +96,13 @@ const Login = () => {
             );
 
             localStorage.setItem("token", res.data.token);
-
-            localStorage.setItem(
-                "user",
-                JSON.stringify(res.data.user)
-            );
-
-            localStorage.setItem(
-                "role",
-                res.data.user.role
-            );
-
-            localStorage.setItem(
-                "user_id",
-                res.data.user.id
-            );
+            localStorage.setItem("user", JSON.stringify(res.data.user));
+            localStorage.setItem("role", res.data.user.role);
+            localStorage.setItem("user_id", res.data.user.id);
 
             if (remember) {
                 localStorage.setItem("rememberEmail", email);
             }
-
-            alert("✅ Login Successful");
 
             if (res.data.user.role === "ngo") {
                 navigate("/ngo-dashboard");
@@ -57,19 +110,11 @@ const Login = () => {
                 navigate("/donate");
             }
 
-        }
-
-        catch (err) {
-
+        } catch (err) {
             console.log(err);
-
-            alert(
-                err.response?.data?.message ||
-                "Invalid Credentials"
-            );
-
+            
+            setErrorMsg(err.response?.data?.message || "Invalid Credentials");
         }
-
     };
     return (
         <div className="login-page">

@@ -36,7 +36,7 @@ const AdminLogin = () => {
                 JSON.stringify(res.data.admin)
             );
 
-            alert("✅ Admin Login Successful");
+            // alert("✅ Admin Login Successful");
 
             navigate("/admin-dashboard");
 
