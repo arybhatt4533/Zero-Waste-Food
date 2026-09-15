@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./AdminDashboard.css";
+import logoImage from "../assets/zwf.png";
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
@@ -159,7 +160,9 @@ const AdminDashboard = () => {
         <div className="admin-dashboard">
             {/* ================= NAVBAR ================= */}
             <div className="admin-navbar">
-                <h2>🌿 Zero Waste Food Admin Panel</h2>
+                <div className="admin-brand">
+                    <img className="admin-navbar-logo" src={logoImage} alt="Zero Waste Food" />
+                </div>
                 <div className="admin-user">
                     <span>👨‍💼 Super Admin</span>
                     <button onClick={logout}>Logout</button>

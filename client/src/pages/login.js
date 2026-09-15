@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
+import logoImage from "../assets/zwf.png";
 
 // const Login = () => {
 
@@ -129,8 +130,8 @@ const Login = () => {
 
                 <div className="login-left">
 
-                    <div className="brand-badge">
-                        🌿 Zero Waste Food
+                    <div className="login-brand-badge">
+                        <img src={logoImage} alt="Zero Waste Food" className="login-brand-logo" />
                     </div>
 
                     <h1>
@@ -211,8 +212,8 @@ const Login = () => {
                         onSubmit={handleLogin}
                     >
 
-                        <div className="login-logo">
-                            🌿
+                        <div className="login-form-logo">
+                            <img src={logoImage} alt="Zero Waste Food" />
                         </div>
 
                         <h2>Welcome Back</h2>

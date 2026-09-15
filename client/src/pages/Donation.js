@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import "./Donation.css";
+import logoImage from "../assets/zwf.png";
 
 const Donation = () => {
     const [formData, setFormData] = useState({
@@ -137,7 +138,7 @@ const Donation = () => {
             <nav className="navbar">
 
                 <div className="logo">
-                     Zero Waste Food
+                    <img src={logoImage} alt="Zero Waste Food" />
                 </div>
 
                 <ul className="nav-links">
@@ -777,8 +778,8 @@ const Donation = () => {
 
                     <div className="footer-brand">
 
-                        <h2>
-                            🌿 Zero Waste Food
+                        <h2 className="footer-brand-logo">
+                            <img src={logoImage} alt="Zero Waste Food" />
                         </h2>
 
                         <p>
@@ -804,13 +805,13 @@ const Donation = () => {
                                 <i className="fab fa-linkedin"></i>
                             </a>
 
-                            <a href="#">
+                            <button type="button" className="footer-social-button" aria-label="Instagram">
                                 <i className="fab fa-instagram"></i>
-                            </a>
+                            </button>
 
-                            <a href="#">
+                            <button type="button" className="footer-social-button" aria-label="Facebook">
                                 <i className="fab fa-facebook"></i>
-                            </a>
+                            </button>
 
                         </div>
 

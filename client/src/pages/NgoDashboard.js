@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import './NgoDashboard.css';
 import { useNavigate } from "react-router-dom";
+import logoImage from "../assets/zwf.png";
 
 const NgoDashboard = () => {
     const [foodList, setFoodList] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
     const [loading, setLoading] = useState(false);
+    const [currentTime, setCurrentTime] = useState(Date.now());
+    const [fallbackImages, setFallbackImages] = useState({});
 
     const navigate = useNavigate();
-    const user = JSON.parse(localStorage.getItem("user"));
+    const filterSectionRef = useRef(null);
 
     const fetchDonations = async () => {
         setLoading(true);
@@ -33,22 +37,18 @@ const NgoDashboard = () => {
         console.log("Claim button clicked");
         console.log("Donation ID:", id);
 
-        let ngo_id = localStorage.getItem("user_id");
-        if (!ngo_id) {
-            let ngo_id = localStorage.getItem("user_id");
+        const token = localStorage.getItem("token");
+        const storedUser = localStorage.getItem("user");
 
-            if (!ngo_id) {
-                const storedUser = localStorage.getItem("user");
-
-                if (storedUser) {
-                    const parsedUser = JSON.parse(storedUser);
-
-                    ngo_id = parsedUser.id;
-                }
-            }
-
-            console.log("NGO ID =", ngo_id);
+        if (!token || !storedUser) {
+            navigate("/login");
+            return;
         }
+
+        const parsedUser = JSON.parse(storedUser);
+        const ngo_id = localStorage.getItem("user_id") || parsedUser.id;
+
+        console.log("NGO ID =", ngo_id);
 
         if (!id) {
             alert("Invalid Donation ID");
@@ -81,19 +81,50 @@ const NgoDashboard = () => {
         }
     };
 
-    const getTimeRemaining = (expiryTime) => {
-        const now = new Date();
-        const expiry = new Date(expiryTime);
-        const diff = expiry - now;
+    useEffect(() => {
+        const clock = setInterval(() => setCurrentTime(Date.now()), 60000);
+        return () => clearInterval(clock);
+    }, []);
 
-        if (diff < 0) return '⏰ Expired';
+    const getExpiryDetails = (expiryTime) => {
+        const expiry = new Date(expiryTime);
+        const diff = expiry.getTime() - currentTime;
+
+        if (Number.isNaN(expiry.getTime())) {
+            return {
+                status: "unknown",
+                label: "Expiry unavailable",
+                date: "Not provided",
+                time: ""
+            };
+        }
+
+        const date = expiry.toLocaleDateString(undefined, {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        });
+        const time = expiry.toLocaleTimeString(undefined, {
+            hour: "numeric",
+            minute: "2-digit"
+        });
+
+        if (diff <= 0) {
+            return { status: "expired", label: "Expired", date, time };
+        }
 
         const hours = Math.floor(diff / (1000 * 60 * 60));
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const remaining = hours < 1
+            ? `${minutes}m left`
+            : `${hours}h ${minutes}m left`;
 
-        if (hours < 1) return `⏰ ${minutes}m left`;
-        if (hours < 3) return `⏰ ${hours}h ${minutes}m left`;
-        return `⏰ ${hours}h left`;
+        return {
+            status: diff <= 3 * 60 * 60 * 1000 ? "urgent" : "available",
+            label: remaining,
+            date,
+            time
+        };
     };
 
     /* ===========================
@@ -116,19 +147,50 @@ const NgoDashboard = () => {
         return () => clearInterval(interval);
     }, [heroImages.length]);
 
+    const filteredFoodList = foodList.filter((item) => {
+        const searchableText = [
+            item.food_name,
+            item.restaurant_name,
+            item.location
+        ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+
+        return searchableText.includes(searchTerm.trim().toLowerCase());
+    });
+
+    const handleSearch = (event) => {
+        event.preventDefault();
+        filterSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+
+    const defaultFoodImage = "https://images.unsplash.com/photo-1547592180-85f173990554?w=800";
+
+    const handleImageError = (id) => {
+        setFallbackImages((previous) => ({ ...previous, [id]: true }));
+    };
+
     return (
         <div className="ngo-dashboard">
             {/* NAVBAR */}
             <nav className="ngo-navbar">
                 <div className="ngo-logo">
-                    🌿 <span>Zero Waste Food</span>
+                    <img src={logoImage} alt="Zero Waste Food" />
                 </div>
-                <div className="ngo-search">
+                <form className="ngo-search" onSubmit={handleSearch}>
+                    <span className="navbar-search-icon" aria-hidden="true" />
                     <input
                         type="text"
                         placeholder="Search food, restaurant..."
+                        value={searchTerm}
+                        onChange={(event) => setSearchTerm(event.target.value)}
+                        aria-label="Search donations"
                     />
-                </div>
+                    <button className="navbar-search-button" type="submit" aria-label="Search food">
+                        <span className="button-search-icon" aria-hidden="true" />
+                    </button>
+                </form>
                 <div className="ngo-nav-right">
                     <button className="notification-btn">🔔</button>
                     <button
@@ -206,6 +268,23 @@ const NgoDashboard = () => {
                 </div>
             </section>
 
+            <div className="ngo-warning-ticker" role="status" aria-label="NGO food access notice">
+                <div className="ngo-warning-track">
+                    <div className="ngo-warning-copy">
+                        <span>⚠ Food donations are reserved for verified NGOs</span>
+                        <b>✦</b>
+                        <span>Claim food only for community distribution</span>
+                        <b>✦</b>
+                    </div>
+                    <div className="ngo-warning-copy" aria-hidden="true">
+                        <span>⚠ Food donations are reserved for verified NGOs</span>
+                        <b>✦</b>
+                        <span>Claim food only for community distribution</span>
+                        <b>✦</b>
+                    </div>
+                </div>
+            </div>
+
             {/* DASHBOARD SUMMARY */}
             <section className="summary-section">
                 <div className="summary-card">
@@ -232,7 +311,7 @@ const NgoDashboard = () => {
 
             {/* ================= SEARCH + FILTER ================= */}
 
-            <section className="filter-section">
+            <section className="filter-section" ref={filterSectionRef}>
 
                 <div className="filter-top">
 
@@ -261,6 +340,9 @@ const NgoDashboard = () => {
                         <input
                             type="text"
                             placeholder="Search food, restaurant, location..."
+                            value={searchTerm}
+                            onChange={(event) => setSearchTerm(event.target.value)}
+                            aria-label="Search donations by food, restaurant, or location"
                         />
 
                     </div>
@@ -310,34 +392,46 @@ const NgoDashboard = () => {
                         <div className="loader"></div>
                         <h2>Loading Donations...</h2>
                     </div>
-                ) : foodList.length === 0 ? (
+                ) : filteredFoodList.length === 0 ? (
                     <div className="empty-state">
                         <img
                             src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png"
-                            alt="No Food"
+                            alt="No food found"
                         />
-                        <h2>No Food Donations Available</h2>
+                        <h2>{searchTerm ? "No Matching Donations Found" : "No Food Donations Available"}</h2>
                         <p>
-                            There are currently no available donations.
-                            Please check again later.
+                            {searchTerm
+                                ? "Try searching for another food, restaurant, or location."
+                                : "There are currently no available donations. Please check again later."}
                         </p>
                     </div>
                 ) : (
-                    foodList.map((item) => {
+                    filteredFoodList.map((item) => {
                         console.log("Donation Item =>", item);
+                        const expiryDetails = getExpiryDetails(item.expiry_time);
+                        const hasRealImage = Boolean(item.image_url) && !fallbackImages[item.id];
                         return (
                             <div className="food-card" key={item.id}>
                                 {/* Food Image */}
                                 <div className="food-image">
                                     <img
                                         src={
-                                            item.image_url
+                                            hasRealImage
                                                 ? `https://zero-waste-food-b.onrender.com${item.image_url}`
-                                                : "https://images.unsplash.com/photo-1547592180-85f173990554?w=800"
+                                                : defaultFoodImage
                                         }
                                         alt={item.food_name}
+                                        onError={() => handleImageError(item.id)}
                                     />
-                                    <span className="food-status">🟢 Available</span>
+                                    {!hasRealImage && (
+                                        <span className="default-image-message">
+                                            Real picture not available
+                                        </span>
+                                    )}
+                                    <span className={`food-status ${expiryDetails.status}`}>
+                                        {expiryDetails.status === "expired" ? "Expired" :
+                                            expiryDetails.status === "urgent" ? "Expiring Soon" : "Available"}
+                                    </span>
                                 </div>
 
                                 {/* Food Content */}
@@ -346,9 +440,12 @@ const NgoDashboard = () => {
                                     <p>🏪 {item.restaurant_name}</p>
                                     <p>📦 {item.quantity} Servings</p>
                                     <p>📍 {item.location}</p>
-                                    <p className="expiry">
-                                        {getTimeRemaining(item.expiry_time)}
-                                    </p>
+                                    <div className={`expiry expiry-${expiryDetails.status}`}>
+                                        <span className="expiry-label">Expiry</span>
+                                        <strong>{expiryDetails.date}</strong>
+                                        <span>{expiryDetails.time}</span>
+                                        <small>{expiryDetails.label}</small>
+                                    </div>
                                     <div className="pickup-time">
                                         <span>🚚 Pickup ETA</span>
                                         <span>20-30 min</span>
@@ -356,6 +453,7 @@ const NgoDashboard = () => {
                                     <button
                                         type="button"
                                         className="claim-btn"
+                                        disabled={expiryDetails.status === "expired"}
                                         onClick={(e) => {
                                             e.preventDefault();
                                             e.stopPropagation();

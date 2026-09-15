@@ -57,7 +57,7 @@ body {
 .admin-navbar {
   width: 100%;
   min-height: 80px;
- background:linear-gradient(135deg,#fffaf3,#cfdc85,#fffaf3);
+  background: linear-gradient(135deg, #fffaf3, #cfdc85, #fffaf3);
   backdrop-filter: blur(16px);
   border-radius: 20px;
   padding: 15px 35px;
@@ -72,15 +72,137 @@ body {
   margin-bottom: 25px;
 }
 
-/* Brand Title Fix */
-.admin-navbar h2, 
-.admin-logo {
-  font-size: 22px;
-  font-weight: 800;
-  color: #1e293b !important; /* Fixed: High contrast text */
-  display: flex;
-  align-items: center;
-  gap: 10px;
+/* =========================================================
+   ADMIN DASHBOARD — NAVBAR BRAND LOGO
+   ========================================================= */
+
+.admin-brand {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    flex: 0 0 auto;
+
+    width: auto;
+    height: 150px;
+
+    padding-left: 20px;
+    margin: 0;
+}
+
+
+/* Logo itself */
+
+.admin-navbar-logo {
+    display: block;
+
+    width: 300px;
+    height: 200px;
+
+    max-height: 58px;
+
+    object-fit: contain;
+    object-position: left center;
+
+    background: transparent !important;
+
+    border: none !important;
+    border-radius: 0 !important;
+
+    box-shadow: none !important;
+    filter: none !important;
+
+    padding: 0;
+    margin: 0;
+
+    flex: 0 0 auto;
+
+    transition: transform 0.2s ease;
+}
+
+
+/* Small professional hover */
+
+.admin-navbar-logo:hover {
+    transform: scale(1.02);
+}
+
+
+/* =========================================================
+   MAKE SURE NO LOGO HOLDER/BACKGROUND EXISTS
+   ========================================================= */
+
+.admin-brand,
+.admin-brand::before,
+.admin-brand::after,
+.admin-navbar-logo::before,
+.admin-navbar-logo::after {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+
+/* =========================================================
+   NAVBAR — KEEP LOGO INSIDE IT
+   ========================================================= */
+
+.admin-navbar {
+    display: flex;
+    align-items: center;
+
+    min-height: 72px;
+    height: 72px;
+
+    padding: 0 24px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .admin-navbar {
+        min-height: 64px;
+        height: 64px;
+
+        padding: 0 16px;
+    }
+
+    .admin-brand {
+        height: 100%;
+    }
+
+    .admin-navbar-logo {
+        width: 140px;
+        height: auto;
+
+        max-height: 48px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .admin-navbar {
+        min-height: 58px;
+        height: 58px;
+
+        padding: 0 12px;
+    }
+
+    .admin-navbar-logo {
+        width: 120px;
+        max-height: 42px;
+    }
 }
 
 .admin-user {
@@ -211,7 +333,8 @@ body {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: #64748b !important; /* Fixed: High contrast label */
+  color: #64748b !important;
+  /* Fixed: High contrast label */
   margin-bottom: 8px;
 }
 
@@ -219,7 +342,8 @@ body {
 .stat-card h2 {
   font-size: 34px;
   font-weight: 800;
-  color: #0f172a !important; /* Fixed: Visible dark number */
+  color: #0f172a !important;
+  /* Fixed: Visible dark number */
 }
 
 /* ======================================
@@ -357,6 +481,7 @@ tbody td {
 ====================================== */
 
 @media (max-width: 1100px) {
+
   .dashboard-cards,
   .admin-stats {
     grid-template-columns: repeat(2, 1fr);

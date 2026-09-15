@@ -434,40 +434,19 @@ LOGIN BOX
 
 }
 
-.login-logo{
-
-    width:95px;
-
-    height:95px;
-
-    margin:auto;
-
-    border-radius:50%;
-
+.admin-login-logo{
+    width:230px;
+    height:auto;
+    margin:0 auto 24px;
     display:flex;
-
     align-items:center;
-
     justify-content:center;
-
-    font-size:42px;
-
-    background:
-    linear-gradient(
-        135deg,
-        #e23744,
-        #ff5a5f
-    );
-
-    color:#fff;
-
-    margin-bottom:28px;
-
-    box-shadow:
-    0 20px 45px rgba(226,55,68,.45);
-
-    animation:heartbeat 2s infinite;
-
+    padding:0;
+    background:transparent;
+    border:0;
+    border-radius:0;
+    box-shadow:none;
+    filter:none;
 }
 
 @keyframes heartbeat{
@@ -800,4 +779,20 @@ input:-webkit-autofill:active {
 input:autofill {
     background-color: #ffffff !important;
     color: #000000 !important;
+}
+
+/* Uploaded brand asset */
+.admin-login-logo img {
+    display: block;
+    width: 230px;
+    height: auto;
+    object-fit: contain;
+    background: transparent;
+}
+
+@media (max-width: 650px) {
+    .admin-login-logo,
+    .admin-login-logo img {
+        width: 190px;
+    }
 }

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Signup.css';
+import logoImage from '../assets/zwf.png';
 
 const Signup = () => {
     const [name, setName] = useState('');
@@ -75,8 +76,8 @@ const Signup = () => {
                 {/* RIGHT SECTION (Signup Form) */}
                 <div className="login-right" style={{ padding: '45px', display: 'flex', alignItems: 'center' }}>
                     <div className="login-card">
-                        <div className="login-logo">
-                            🍱
+                        <div className="signup-logo">
+                            <img src={logoImage} alt="Zero Waste Food" />
                         </div>
                         <h2>Create Account</h2>
                         <p className="subtitle">Fill in your details to get started</p>

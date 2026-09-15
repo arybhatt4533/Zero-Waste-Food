@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Admin.css";
+import logoImage from "../assets/zwf.png";
 
 const AdminLogin = () => {
 
@@ -124,8 +125,8 @@ const AdminLogin = () => {
                     onSubmit={handleLogin}
                 >
 
-                    <div className="login-logo">
-                        🌿
+                    <div className="admin-login-logo">
+                        <img src={logoImage} alt="Zero Waste Food" />
                     </div>
 
                     <h2>Welcome Back</h2>

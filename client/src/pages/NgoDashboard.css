@@ -68,7 +68,7 @@ html, body {
     align-items:center;
     gap:12px;
 
-    font-size:30px;
+    font-size:25px;
 
     font-weight:1100;
 
@@ -110,8 +110,82 @@ html, body {
 
     display:flex;
     justify-content:center;
+    align-items:center;
 
     padding:0 45px;
+    position:relative;
+}
+
+.navbar-search-icon{
+    position:absolute;
+    left:calc(50% - 260px);
+    top:50%;
+    z-index:1;
+    width:14px;
+    height:14px;
+    transform:translateY(-50%);
+    border:2px solid #9ca3af;
+    border-radius:50%;
+    pointer-events:none;
+}
+
+.navbar-search-icon::after,
+.button-search-icon::after{
+    content:"";
+    position:absolute;
+    width:7px;
+    height:2px;
+    border-radius:2px;
+    background:currentColor;
+    transform:rotate(45deg);
+    transform-origin:left center;
+}
+
+.navbar-search-icon::after{
+    right:-5px;
+    bottom:-3px;
+}
+
+.navbar-search-button{
+    position:absolute;
+    right:calc(50% - 260px);
+    top:50%;
+    z-index:1;
+    width:44px;
+    height:44px;
+    transform:translateY(-50%);
+    border:0;
+    border-radius:12px;
+    background:#f59e0b;
+    color:#fff;
+    cursor:pointer;
+    font-size:17px;
+    transition:.25s;
+}
+
+.button-search-icon{
+    position:relative;
+    display:inline-block;
+    width:14px;
+    height:14px;
+    border:2px solid #fff;
+    border-radius:50%;
+    color:#fff;
+}
+
+.button-search-icon::after{
+    right:-5px;
+    bottom:-3px;
+}
+
+.navbar-search-button:hover{
+    background:#d97706;
+    transform:translateY(-50%) scale(1.04);
+}
+
+.navbar-search-button:focus-visible{
+    outline:3px solid rgba(245,158,11,.35);
+    outline-offset:3px;
 }
 
 .ngo-search input{
@@ -127,7 +201,7 @@ html, body {
 
     border-radius:15px;
 
-    padding:0 24px;
+    padding:0 66px 0 52px;
 
     font-size:15px;
 
@@ -152,8 +226,6 @@ html, body {
     box-shadow:
     inset 0 0 0 2px #f59e0b,
     0 12px 25px rgba(245,158,11,.18);
-
-    transform:translateY(-2px);
 }
 
 /*==============================
@@ -499,6 +571,83 @@ html, body {
     0% { transform: translateY(0px); }
     50% { transform: translateY(-10px); }
     100% { transform: translateY(0px); }
+}
+
+/*======================================
+          NGO ACCESS NOTICE
+=======================================*/
+
+.ngo-warning-ticker {
+    position: relative;
+    width: 95%;
+    max-width: 1450px;
+    height: 42px;
+    margin: 20px auto 10px;
+    overflow: hidden;
+    border: 2px solid #f7b267;
+    border-radius: 12px;
+    background: repeating-linear-gradient(
+        -45deg,
+        #fff4df 0,
+        #fff4df 12px,
+        #ffe9c7 12px,
+        #ffe9c7 24px
+    );
+    color: #9a3412;
+    white-space: nowrap;
+    box-shadow: 0 8px 18px rgba(245, 158, 11, 0.12);
+}
+
+.ngo-warning-ticker::before,
+.ngo-warning-ticker::after {
+    content: "✦";
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    width: 25px;
+    height: 25px;
+    transform: translateY(-50%);
+    border: 2px solid #f7b267;
+    border-radius: 50%;
+    background: #fffaf2;
+    color: #f59e0b;
+    font-size: 13px;
+    line-height: 21px;
+    text-align: center;
+}
+
+.ngo-warning-ticker::before { left: 8px; }
+.ngo-warning-ticker::after { right: 8px; }
+
+.ngo-warning-track {
+    display: flex;
+    height: 100%;
+    width: max-content;
+    animation: ngoWarningScroll 26s linear infinite;
+    animation-play-state: running;
+    will-change: transform;
+}
+
+.ngo-warning-copy {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex: 0 0 max-content;
+    min-width: max-content;
+    padding: 0 34px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+}
+
+.ngo-warning-copy b {
+    color: #f59e0b;
+    font-size: 15px;
+}
+
+@keyframes ngoWarningScroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
 }
 
 /*======================================
@@ -1081,6 +1230,22 @@ font-size:14px;
     transition: transform 0.5s ease;
 }
 
+.default-image-message {
+    position: absolute;
+    left: 50%;
+    bottom: 14px;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: calc(100% - 28px);
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: rgba(15, 23, 42, 0.72);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-align: center;
+}
+
 .food-card:hover .food-image img {
     transform: scale(1.06);
 }
@@ -1101,6 +1266,32 @@ font-size:14px;
     display: flex;
     align-items: center;
     gap: 5px;
+}
+
+.food-status::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #22c55e;
+}
+
+.food-status.urgent {
+    color: #9a3412;
+    background: rgba(255, 237, 213, 0.95);
+}
+
+.food-status.urgent::before {
+    background: #f97316;
+}
+
+.food-status.expired {
+    color: #991b1b;
+    background: rgba(254, 226, 226, 0.95);
+}
+
+.food-status.expired::before {
+    background: #ef4444;
 }
 
 /* Card content body */
@@ -1130,16 +1321,52 @@ font-size:14px;
     gap: 8px;
 }
 
-/* Expiry Highlight text */
-.food-content p.expiry {
-    color: #ea3b3b; /* Warning Orange color */
+/* Expiry details */
+.expiry {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 4px 8px;
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    color: #9a3412;
+    background: #fff1df;
+    font-size: 0.86rem;
+}
+
+.expiry-label {
+    grid-column: 1 / -1;
+    color: #7c2d12;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.expiry strong {
+    color: #7c2d12;
+}
+
+.expiry small {
+    grid-column: 1 / -1;
+    color: #c2410c;
     font-weight: 700;
-    background-color: #f0d1ad;
-    padding: 6px 12px;
-    border-radius: 8px;
-    display: inline-flex;
-    margin-top: 10px;
-    width: fit-content;
+}
+
+.expiry-urgent {
+    color: #c2410c;
+    background: #ffedd5;
+}
+
+.expiry-expired {
+    color: #991b1b;
+    background: #fee2e2;
+}
+
+.expiry-expired strong,
+.expiry-expired small {
+    color: #991b1b;
 }
 
 /* Estimated Pickup Box */
@@ -1190,6 +1417,15 @@ font-size:14px;
     background: linear-gradient(135deg, #f57c00, #ffa726);
     box-shadow: 0 8px 25px rgba(245, 124, 0, 0.35);
     transform: translateY(-2px);
+}
+
+.claim-btn:disabled,
+.claim-btn:disabled:hover {
+    background: #cbd5e1;
+    color: #64748b;
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
 }
 
 .claim-btn:active {
@@ -2669,4 +2905,47 @@ font-size:14px;
 .footer-bottom strong {
     color: #c72e36;
     font-weight: 600;
+}
+
+/* Uploaded brand asset */
+.ngo-logo img {
+    display: block;
+    width: 160px;
+    height: auto;
+    object-fit: contain;
+    background: transparent;
+    padding-left: 0%;
+}
+
+.ngo-logo {
+    width: 160px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex: 0 0 160px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: visible;
+    transition: transform .25s ease;
+}
+
+.ngo-logo:hover {
+    transform: scale(1.03);
+}
+
+@media (max-width: 650px) {
+    .ngo-logo img {
+        width: 140px;
+        height: auto;
+    }
+
+    .ngo-logo {
+        width: 135px;
+        height: 45px;
+        flex-basis: 140px;
+    }
 }
